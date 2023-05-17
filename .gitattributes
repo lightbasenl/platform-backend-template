@@ -1,0 +1,2 @@
+**/src/generated/** -diff linguist-generated=true
+**/types/generated/** -diff linguist-generated=true

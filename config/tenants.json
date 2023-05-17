@@ -1,0 +1,13 @@
+{
+  "tenants": {
+    "scaffold": {
+      "data": {},
+      "urlConfig": {
+        "scaffold.acc.lightbase.nl": {
+          "environment": "acceptance",
+          "apiUrl": "api.scaffold.acc.lightbase.nl"
+        }
+      }
+    }
+  }
+}

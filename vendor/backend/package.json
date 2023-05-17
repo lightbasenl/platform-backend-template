@@ -1,0 +1,32 @@
+{
+  "name": "@lightbasenl/backend",
+  "author": "Lightbase Platforms <info@lightbase.nl>",
+  "version": "0.50.2",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    "default": "./src/index.js"
+  },
+  "files": [
+    "README.md",
+    "src"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "@xmldom/xmldom": "0.8.7",
+    "bcrypt": "5.1.0",
+    "speakeasy": "2.0.0",
+    "xml-crypto": "3.0.1",
+    "xpath": "0.0.32"
+  },
+  "peerDependencies": {
+    "@compas/stdlib": "*",
+    "@compas/store": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lightbasenl/platform-components.git",
+    "directory": "packages/backend"
+  },
+  "gitHead": "2f1b97dd2c563f0c01d48019d46da867a3b7aa08"
+}
