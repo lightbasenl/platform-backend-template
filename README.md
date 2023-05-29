@@ -1,4 +1,4 @@
-# scaffold-backend
+# platform-backend-template
 
 A Compas backend platform template to use as a start for new projects.
 
