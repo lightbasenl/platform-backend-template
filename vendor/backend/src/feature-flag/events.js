@@ -28,7 +28,18 @@ export async function featureFlagCurrent(event) {
   const result = {};
 
   for (const flag of flags) {
+    if (!featureFlags.availableFlags.includes(flag.name)) {
+      // Don't return flags which are not yet known to this instance.
+      continue;
+    }
+
     result[flag.name] = flag.globalValue;
+  }
+
+  for (const flag of featureFlags.availableFlags) {
+    // Add flags which are not yet in the database, but are present in the config. These
+    // default to false
+    result[flag] ??= false;
   }
 
   eventStop(event);
