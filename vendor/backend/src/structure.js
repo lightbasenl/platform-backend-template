@@ -280,7 +280,12 @@ export async function extendWithBackendBase(app) {
     }),
 
     T.object("resolvedTenant").keys({
-      tenant: T.any().raw("QueryResultBackendTenant"),
+      tenant: T.any().implementations({
+        js: {
+          validatorInputType: "any",
+          validatorOutputType: "QueryResultBackendTenant",
+        },
+      }),
       urlConfig: T.reference("backend", "tenantUrlConfig"),
       publicUrl: T.string(),
       apiUrl: T.string(),
