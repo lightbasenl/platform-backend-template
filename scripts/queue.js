@@ -110,6 +110,7 @@ async function main() {
       "backendManagement.invalidateUsers": managementInvalidateUsers,
     },
     parallelCount: workerCount,
+    deleteJobOnCompletion: true,
   });
 
   start();
