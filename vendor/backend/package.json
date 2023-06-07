@@ -13,7 +13,7 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@xmldom/xmldom": "0.8.7",
+    "@xmldom/xmldom": "0.8.8",
     "bcrypt": "5.1.0",
     "speakeasy": "2.0.0",
     "xml-crypto": "3.0.1",
@@ -28,5 +28,5 @@
     "url": "https://github.com/lightbasenl/platform-components.git",
     "directory": "packages/backend"
   },
-  "gitHead": "7105d3f7df4f5cf958106fdf0ff1ca4065cb4829"
+  "gitHead": "7a0daaa108641fcdaff4ee2eb14279bbed644a60"
 }
