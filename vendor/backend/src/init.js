@@ -12,6 +12,7 @@ import { featureFlagInit } from "./feature-flag/init.js";
 import { managementInit } from "./management/init.js";
 import { multitenantLoadConfig } from "./multitenant/config.js";
 import { multitenantInit } from "./multitenant/init.js";
+import { rateLimitInject } from "./ratelimit/events.js";
 import { sql } from "./services.js";
 
 /**
@@ -99,9 +100,11 @@ export async function backendInit(event, config) {
   if (isNil(sql)) {
     throw AppError.serverError({
       message:
-        "Make sure to call 'backendInitQueries' and 'backendInitServices', before calling 'backendInit'.",
+        "Make sure to call 'backendInitServices', before calling 'backendInit'.",
     });
   }
+
+  rateLimitInject();
 
   await sql.begin(async (sql) => {
     // Obtain an exclusive lock for the live time of this transaction. This ensures that
