@@ -163,11 +163,9 @@ export async function multitenantLoadByContext(ctx) {
     result.publicUrl = originWithProtocol ?? tenantOriginWithProtocol;
     configTenant =
       tenantsByPublicUrl[originWithoutProtocol ?? tenantOriginWithoutProtocol];
-    result.apiUrl = `${ctx.protocol}://${
-      configTenant?.urlConfig?.[
-        originWithoutProtocol ?? tenantOriginWithoutProtocol
-      ]?.apiUrl
-    }`;
+    result.apiUrl = `${ctx.protocol}://${configTenant?.urlConfig?.[
+      originWithoutProtocol ?? tenantOriginWithoutProtocol
+    ]?.apiUrl}`;
   } else {
     // We also resolve the 'other' url here,
     // Using either the host or origin header, this way local development resolves to the
