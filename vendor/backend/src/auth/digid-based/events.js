@@ -493,16 +493,21 @@ async function authDigidBasedGetSignatureForPayload(
 ) {
   eventStart(event, "authDigidBased.getSignatureForPayload");
 
-  const xmlSigner = new xmlCrypto.SignedXml();
+  const xmlSigner = new xmlCrypto.SignedXml({
+    signatureAlgorithm,
+    privateKey: keyPair.privateKey,
+  });
 
   const transforms = [
     "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
     "http://www.w3.org/2001/10/xml-exc-c14n#",
   ];
 
-  xmlSigner.addReference(xpath, transforms, digestAlgorithm);
-  xmlSigner.signatureAlgorithm = signatureAlgorithm;
-  xmlSigner.signingKey = keyPair.privateKey;
+  xmlSigner.addReference({
+    xpath,
+    transforms,
+    digestAlgorithm,
+  });
 
   await new Promise((resolve, reject) => {
     xmlSigner.computeSignature(
@@ -549,12 +554,9 @@ async function authDigidBasedVerifySignaturesForXmlPayload(event, payload) {
   }
 
   for (const sig of signatures) {
-    const xmlSigner = new xmlCrypto.SignedXml();
-    xmlSigner.keyInfoProvider = {
-      getKey() {
-        return getDigidPublicKey();
-      },
-    };
+    const xmlSigner = new xmlCrypto.SignedXml({
+      publicCert: getDigidPublicKey(),
+    });
 
     xmlSigner.loadSignature(sig);
     await new Promise((resolve, reject) => {
