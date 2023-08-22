@@ -1,8 +1,8 @@
-import { createSign, createVerify, randomBytes } from "crypto";
-import { readFileSync } from "fs";
-import https from "https";
-import { promisify } from "util";
-import { deflate as asyncDeflate } from "zlib";
+import { createSign, createVerify, randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
+import https from "node:https";
+import { promisify } from "node:util";
+import { deflate as asyncDeflate } from "node:zlib";
 import {
   AppError,
   dirnameForModule,
