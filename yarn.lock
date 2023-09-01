@@ -826,28 +826,28 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@compas/cli@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@compas/cli/-/cli-0.7.2.tgz#6ccf832e53bb666a110990395a19092d6723bdaa"
-  integrity sha512-D9wyiTrnveyjX27DtH0nuoiowEuUwtFlKq29xmkJUVtQdSGmnWP9N8jGe8TIp/aQ3vTF5EuqU6ayFJ1tV2w46A==
+"@compas/cli@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@compas/cli/-/cli-0.7.3.tgz#88976adccce145e8ddb6cf3d315ba60ccf0f933e"
+  integrity sha512-tZ/WtE7P7wItSIeMfoALJYt3Xx1GF4F1FpKj4pe+EwRj7HaSp3wdWiWDuYQ06dZyHGi4ZOppj4RDyiaXTItQ4Q==
   dependencies:
-    "@compas/stdlib" "0.7.2"
+    "@compas/stdlib" "0.7.3"
     c8 "8.0.1"
     chokidar "3.5.3"
     recast "0.23.4"
     tree-kill "1.2.2"
 
-"@compas/code-gen@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@compas/code-gen/-/code-gen-0.7.2.tgz#9de55c86c931bef92da660e553b8bcb0b1e610c8"
-  integrity sha512-UQnYVTDj9eMnoI8QRv93ZTBWgPZktGytC/2BMY5m10OB8N7rlng0uzKMDW857Ff3wltUmj0aEoUCfurmYkzi7w==
+"@compas/code-gen@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@compas/code-gen/-/code-gen-0.7.3.tgz#54610d44d088d920407b55e4e98ab270866ded1f"
+  integrity sha512-BQ9h/DcfhWWpRzBSvGjPOjvDfkQqRGupm/L9Hr457Qcs14qapBMuXhl6xHlHe8y6jXOqY+Z05ibiclpktG+bJg==
   dependencies:
-    "@compas/stdlib" "0.7.2"
+    "@compas/stdlib" "0.7.3"
 
-"@compas/eslint-plugin@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@compas/eslint-plugin/-/eslint-plugin-0.7.2.tgz#03aed0ca43f689578abc753b31a6db99fbaf3847"
-  integrity sha512-ZTTz1dlIBSZ9dxBqzSUYdwjbjXy5YQwg812FOPTmbac7ofzRVhFPCy6lkUd6brn/BrOpRAroVyCefXrdT/26BA==
+"@compas/eslint-plugin@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@compas/eslint-plugin/-/eslint-plugin-0.7.3.tgz#a3fa128b46d2f6d599b515cd86ceb14318587607"
+  integrity sha512-HsUy7GlMGw9GkumwjqwZpDqfEPS967zCpvlLl04Kq7NzxJEt8TKXrUsSVPg600+5n8E7Uw23DGuVsb9FhjmLLA==
   dependencies:
     "@babel/core" "7.22.11"
     "@babel/eslint-parser" "7.22.11"
@@ -858,12 +858,12 @@
     eslint-plugin-jsdoc "46.5.1"
     prettier "3.0.3"
 
-"@compas/server@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@compas/server/-/server-0.7.2.tgz#53de2517e3415c5bf1050944abaf313932beca7f"
-  integrity sha512-4kPm0Hegsgl/ew3uf1tury+JUUJQ2rQLoSbIQO39GiILz4W6pZEZZPpmjUKbM4qHfo5/o5btqLw0RRUab2cz7w==
+"@compas/server@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@compas/server/-/server-0.7.3.tgz#b374b40bf4a2df162bc013e3f2bd7f85386a9abf"
+  integrity sha512-ascbg6KpkTO6b2Tszd+2g/hpY4zeueDX12tweqAcnLlqHM/g++xuIPlwJzn6YtsGvg9oEHVsVLi5itJ47fhe/w==
   dependencies:
-    "@compas/stdlib" "0.7.2"
+    "@compas/stdlib" "0.7.3"
     "@types/formidable" "2.0.6"
     "@types/koa" "2.13.8"
     co-body "6.1.0"
@@ -871,24 +871,24 @@
     keygrip "1.1.0"
     koa "2.14.2"
 
-"@compas/stdlib@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@compas/stdlib/-/stdlib-0.7.2.tgz#3b497693a0d3d32416af47613054fd2688c5f74f"
-  integrity sha512-sQe+OZVZUxKZIGuZ9FLk6hGvYj/g8O3Un2tbasOrUupZsPxtGrVjjNNOwaEJm81io/VWhfDweGiBkeJrvFbg2A==
+"@compas/stdlib@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@compas/stdlib/-/stdlib-0.7.3.tgz#ba7756af5d0a1f2dc069e1ae03c2539ceabc7024"
+  integrity sha512-A/1a8GwKWVlu+MiTAL0NxdtADN/FCmJalNQvXY0d9OJQz+wSJbD4fl5CBBNxhwzRvRZ007+aQuygHh/1L9ghcQ==
   dependencies:
     "@types/node" "20.5.7"
     dotenv "16.3.1"
     lodash.merge "4.6.2"
     pino "8.15.0"
 
-"@compas/store@0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@compas/store/-/store-0.7.2.tgz#d1dd84957084a5e3379f1e6a6b547c5175da86ed"
-  integrity sha512-WKUin4eyL02h4UCu548wXNSMMHmi7npdwvzQlFkpNR4wH+iz6Q3YEXZPW4lILnl6V3ALDhwuOsy/jNAscjhESA==
+"@compas/store@0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@compas/store/-/store-0.7.3.tgz#6be00cf24505fc6b7c7bbcc1426a94b3c1e74250"
+  integrity sha512-5huOPzsPngOxiObEr/ArOqGQpPd5XGb2mjBsvtYOhaVYMbnhs8EJ3J67CVW0LsYENCLnNsJOBaNnGiF0WjAorA==
   dependencies:
     "@aws-sdk/client-s3" "3.400.0"
     "@aws-sdk/lib-storage" "3.400.0"
-    "@compas/stdlib" "0.7.2"
+    "@compas/stdlib" "0.7.3"
     crc "4.3.2"
     cron-parser "^4.9.0"
     file-type "18.5.0"
