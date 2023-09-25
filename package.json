@@ -21,7 +21,7 @@
     "@compas/code-gen": "0.7.5",
     "@compas/eslint-plugin": "0.7.5",
     "@types/mjml": "4.7.1",
-    "@types/nodemailer": "6.4.10"
+    "@types/nodemailer": "6.4.11"
   },
   "prettier": "@compas/eslint-plugin/prettierrc",
   "workspaces": [
