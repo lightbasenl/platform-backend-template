@@ -37,6 +37,11 @@ export {
 } from "./auth/events.js";
 
 export {
+  authImpersonateStartSession,
+  authImpersonateIsInSession,
+} from "./auth/impersonate.events.js";
+
+export {
   authRequireUser,
   authCreateUser,
   authTestCreateUser,

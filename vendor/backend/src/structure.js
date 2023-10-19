@@ -315,6 +315,7 @@ export async function extendWithBackendBase(app) {
       loginType: authRef("loginType"),
       twoStepType: authRef("twoStepType").optional(),
       userId: T.uuid(),
+      impersonatorUserId: T.uuid().optional(),
     }),
 
     Tauth.object("userSummary").keys({
@@ -405,6 +406,16 @@ Errors:
         refreshToken: T.string(),
       })
       .response(authTokenPairType(Tauth)),
+
+    Rauth.post("/impersonate-stop-session", "impersonateStopSession")
+      .docs(
+        `
+    Stop an impersonating session. Requires that the current session belongs to the impersonator. Impersonate sessions can only be started from the platform backends.
+    
+    Callers should bust all local caches and redirect the user to the correct location.
+    `,
+      )
+      .response(successResponse),
 
     Rauth.post("/logout", "logout")
       .docs(`Destroy the current session.`)
