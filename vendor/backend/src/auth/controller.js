@@ -7,7 +7,8 @@ import {
   normalizeSessionErrorsToUnauthorizedAndThrow,
 } from "../util.js";
 import { authPermissions, sessionStoreObjectSymbol } from "./constants.js";
-import { authLoadSessionOptionally } from "./events.js";
+import { authLoadSession, authLoadSessionOptionally } from "./events.js";
+import { authImpersonateStopSession } from "./impersonate.events.js";
 import {
   authFormatUserSummary,
   authRequireUser,
@@ -58,6 +59,19 @@ export async function applyAuthController() {
     }
 
     ctx.body = refreshResult.value;
+
+    if (next) {
+      return next();
+    }
+  };
+
+  controller.authHandlers.impersonateStopSession = async (ctx, next) => {
+    await authLoadSession(newEventFromEvent(ctx.event), sql, ctx);
+    await authImpersonateStopSession(newEventFromEvent(ctx.event), sql, ctx);
+
+    ctx.body = {
+      success: true,
+    };
 
     if (next) {
       return next();

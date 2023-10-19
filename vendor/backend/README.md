@@ -44,6 +44,7 @@ This package is vendored automatically by Lightbase Sync.
 - Session and device management
   - Enforce device to be provided
   - Logout other devices
+  - Impersonate other users
 - Platform management
   - Magic auth via Lightbase Slack workspace
   - Manage feature flags
@@ -654,8 +655,7 @@ combination with device information.
 backendInitServices(app, sql, {
   sessionDeviceSettings: {
     // Optional; limit the number of a sessions a mobile user can have.
-    allowedNumberOfMobileDeviceSessions: 2,
-    // Optional; enforce that all login routes expect device information. This ensures that each session has device information, which allows device management.
+    allowedNumberOfMobileDeviceSessions: 2, // Optional; enforce that all login routes expect device information. This ensures that each session has device information, which allows device management.
     requireDeviceInformationOnLogin: true,
   },
 });
@@ -991,3 +991,13 @@ api routes which don't do auth checks, or ones which use the
 method. Once completed via either `apiAuthTotpProviderVerify` or
 `apiAuthPasswordBasedVerifyOtp`, the session is automatically upgraded to
 `session.type = 'user'` without issuing new tokens.
+
+#### Impersonating another user
+
+Via `authImpersonateStartSession` any backend can allow a user to act on behalf
+of another user. This works by replacing the `userId` in the session. Backends
+can detect if an impersonating session is going on by using
+`authImpersonateIsInSession`, frontends can detect it based on
+`session.impersonatorUserId` returned by `useAuthMe`. Stopping the session can
+only be done in the frontends via `useAuthImpersonateStopSession`. This all
+works on the already active session, so no new access token is returned.
