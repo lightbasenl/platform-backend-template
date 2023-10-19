@@ -15,6 +15,7 @@ import {
   passwordBasedRollingLoginAttemptBlock,
   queries,
   queryUser,
+  shouldPasswordBasedUpdatePasswordRemoveCurrentSession,
   sql as serviceSql,
   userBuilder,
 } from "../../services.js";
@@ -221,6 +222,7 @@ export function authPasswordBasedListEmails(user) {
  * @param {import("@compas/store").Postgres} sql
  * @param {BackendResolvedTenant} resolvedTenant
  * @param {QueryResultAuthUser} user
+ * @param {QueryResultStoreSessionStore} ctxSession
  * @param {AuthPasswordBasedUpdatePasswordBody} body
  * @returns {Promise<void>}
  */
@@ -229,6 +231,7 @@ export async function authPasswordBasedUpdatePassword(
   sql,
   resolvedTenant,
   user,
+  ctxSession,
   body,
 ) {
   eventStart(event, "authPasswordBased.updatePassword");
@@ -243,10 +246,18 @@ export async function authPasswordBasedUpdatePassword(
     },
   });
 
-  await queries.sessionStoreDelete(sql, {
-    $raw: query`"data"->>'userId' =
+  if (shouldPasswordBasedUpdatePasswordRemoveCurrentSession) {
+    await queries.sessionStoreDelete(sql, {
+      $raw: query`"data"->>'userId' =
     ${user.id}`,
-  });
+    });
+  } else {
+    await queries.sessionStoreDelete(sql, {
+      idNotEqual: ctxSession.id,
+      $raw: query`"data"->>'userId' =
+    ${user.id}`,
+    });
+  }
 
   await queueWorkerAddJob(sql, {
     name: authEventNames.authPasswordBasedPasswordUpdated,

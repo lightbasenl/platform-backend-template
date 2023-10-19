@@ -331,6 +331,7 @@ export async function applyPasswordBasedController(settings) {
         sql,
         resolvedTenant,
         user,
+        ctx[sessionStoreObjectSymbol],
         ctx.validatedBody,
       ),
     );

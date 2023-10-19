@@ -127,7 +127,6 @@ export async function authSessionLogout(event, user, session, body) {
   );
 
   const [userSession] = await querySessionStore({
-    device: {},
     where: {
       id: body.sessionId,
       $raw: query`ss."data"->>'userId' = ${user.id}`,

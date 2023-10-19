@@ -28,6 +28,16 @@ export let passwordBasedForcePasswordResetAfterSixMonths = false;
 export let passwordBasedRollingLoginAttemptBlock = false;
 
 /**
+ * Remove all sessions when calling authPasswordBasedUpdatePassword. When set to false,
+ * the current session is kept alive.
+ *
+ * TODO: extract to config file
+ *
+ * @type {boolean}
+ */
+export let shouldPasswordBasedUpdatePasswordRemoveCurrentSession = true;
+
+/**
  *
  * @type {{
  *   allowedNumberOfMobileDeviceSessions?: number;
@@ -123,6 +133,8 @@ export let sessionStoreSettings = {};
  * - shouldPasswordBasedForcePasswordResetAfterSixMonths: enforce password rotation
  * - shouldPasswordBasedRollingLoginAttemptBlock: block an password login after X failed
  * attempts in N time window
+ * - shouldPasswordBasedUpdatePasswordRemoveCurrentSession: set to false to keep the
+ * current session when updating passwords.
  * - sessionDeviceSettings.allowedNumberOfMobileDeviceSessions: enforce that max N number
  * of mobile sessions are allowed (platform: apple or android).
  * - sessionDeviceSettings.requireDeviceInformationOnLogin: enforce the the `device`
@@ -134,6 +146,7 @@ export let sessionStoreSettings = {};
  *   eventMetadata?: any,
  *   shouldPasswordBasedForcePasswordResetAfterSixMonths?: boolean,
  *   shouldPasswordBasedRollingLoginAttemptBlock?: boolean,
+ *   shouldPasswordBasedUpdatePasswordRemoveCurrentSession?: boolean,
  *   sessionDeviceSettings?: {
  *     allowedNumberOfMobileDeviceSessions?: number,
  *     requireDeviceInformationOnLogin?: boolean,
@@ -219,6 +232,8 @@ export async function backendInitServices(other) {
     other.shouldPasswordBasedForcePasswordResetAfterSixMonths ?? false;
   passwordBasedRollingLoginAttemptBlock =
     other.shouldPasswordBasedRollingLoginAttemptBlock ?? false;
+  shouldPasswordBasedUpdatePasswordRemoveCurrentSession =
+    other.shouldPasswordBasedUpdatePasswordRemoveCurrentSession ?? true;
 
   globalEventMetadata = other.eventMetadata ?? {};
 
