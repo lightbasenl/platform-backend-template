@@ -231,9 +231,7 @@ function slackGetToken() {
   const token = environment.LPC_MANAGEMENT_SLACK_TOKEN;
 
   if (typeof token !== "string" || token.length === 0) {
-    throw AppError.serverError({
-      message: `Missing environment variable 'LPC_MANAGEMENT_SLACK_TOKEN'. Please add it to your '.env' file.`,
-    });
+    throw AppError.validationError(`management.disabled`, {});
   }
 
   if (token.startsWith("xoxb")) {

@@ -292,7 +292,7 @@ export async function extendWithBackendBase(app) {
     }),
 
     T.object("featureFlagDefinition").keys({
-      availableFlags: [T.string().pattern(/^__FEATURE_[A-Z_]+$/g)],
+      availableFlags: [T.string().pattern(/^__(FEATURE|FIX)_[A-Z0-9_]+$/g)],
     }),
 
     Tauth.string("sessionType").oneOf(
