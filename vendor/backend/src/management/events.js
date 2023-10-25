@@ -81,7 +81,6 @@ export async function managementFeatureFlagCrudModifier(event, ctx) {
   eventStart(event, "managementFeatureFlag.crudModifier");
 
   await backendGetTenantAndUser(ctx, {
-    requireAnonymousBased: true,
     requiredPermissions: [managementConstants.permission],
   });
 

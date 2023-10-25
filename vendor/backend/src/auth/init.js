@@ -36,10 +36,16 @@ export async function authInit(event, sql, config) {
 
   setSessionTransportAndStore(config.auth.sessionTransportSettings);
 
-  await authPermissionSyncPermissions(newEventFromEvent(event), sql, [
-    ...(config.auth.permissionIdentifiers ?? []),
-    managementConstants.permission,
-  ]);
+  const permissionList = config.auth.permissionIdentifiers ?? [];
+  if (!permissionList.includes(managementConstants.permission)) {
+    permissionList.push(managementConstants.permission);
+  }
+
+  await authPermissionSyncPermissions(
+    newEventFromEvent(event),
+    sql,
+    permissionList,
+  );
 
   const tenants = await queryTenant({
     ...tenantBuilder,
