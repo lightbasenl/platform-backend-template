@@ -1,6 +1,5 @@
 import { AppError, eventStart, eventStop, isNil } from "@compas/stdlib";
-import { featureFlags, queries, sql } from "../services.js";
-import { importProjectResource } from "../util.js";
+import { featureFlags, queries, queryFeatureFlag, sql } from "../services.js";
 
 /**
  * Get current feature flags
@@ -10,12 +9,6 @@ import { importProjectResource } from "../util.js";
  */
 export async function featureFlagCurrent(event) {
   eventStart(event, "featureFlag.current");
-
-  /** @type {typeof import("../../../../src/generated/application/database/featureFlag.js").queryFeatureFlag} */
-  const queryFeatureFlag = await importProjectResource(
-    "./src/generated/application/database/featureFlag.js",
-    "queryFeatureFlag",
-  );
 
   const flags = await queryFeatureFlag({}).exec(sql);
 
@@ -57,12 +50,6 @@ export async function featureFlagCurrent(event) {
 export async function featureFlagSyncAvailableFlags(event, sql) {
   eventStart(event, "featureFlag.syncAvailableFlags");
 
-  /** @type {typeof import("../../../../src/generated/application/database/featureFlag.js").queryFeatureFlag} */
-  const queryFeatureFlag = await importProjectResource(
-    "./src/generated/application/database/featureFlag.js",
-    "queryFeatureFlag",
-  );
-
   if (featureFlags.availableFlags.length === 0) {
     featureFlags.availableFlags.push("__FEATURE_LPC_EXAMPLE_FLAG");
   }
@@ -103,12 +90,6 @@ export async function featureFlagSyncAvailableFlags(event, sql) {
 export async function featureFlagGetDynamic(event, tenant, user, identifier) {
   eventStart(event, "featureFlag.getDynamic");
 
-  /** @type {typeof import("../../../../src/generated/application/database/featureFlag.js").queryFeatureFlag} */
-  const queryFeatureFlag = await importProjectResource(
-    "./src/generated/application/database/featureFlag.js",
-    "queryFeatureFlag",
-  );
-
   const [flag] = await queryFeatureFlag({
     where: {
       name: identifier,
@@ -138,12 +119,6 @@ export async function featureFlagGetDynamic(event, tenant, user, identifier) {
  */
 export async function featureFlagSetDynamic(event, identifier, value) {
   eventStart(event, "featureFlag.setDynamic");
-
-  /** @type {typeof import("../../../../src/generated/application/database/featureFlag.js").queryFeatureFlag} */
-  const queryFeatureFlag = await importProjectResource(
-    "./src/generated/application/database/featureFlag.js",
-    "queryFeatureFlag",
-  );
 
   const [flag] = await queryFeatureFlag({
     where: {

@@ -12,11 +12,12 @@ import speakeasy from "speakeasy";
 import {
   globalEventMetadata,
   queries,
+  queryPermission,
+  queryRole,
   queryTenant,
   queryUser,
   userBuilder,
 } from "../services.js";
-import { importProjectResource } from "../util.js";
 import { authAnonymousBasedRegister } from "./anonymous-based/events.js";
 import { authEventNames, authStringPrefixes } from "./constants.js";
 import { authDigidBasedRegister } from "./digid-based/events.js";
@@ -283,17 +284,6 @@ export async function authCreateUser(event, sql, data, options) {
  */
 export async function authTestCreateUser(event, sql, options = {}) {
   eventStart(event, "auth.testCreateUser");
-
-  /** @type {typeof import("../../../../src/generated/application/database/permission.js").queryPermission} */
-  const queryPermission = await importProjectResource(
-    "./src/generated/application/database/permission.js",
-    "queryPermission",
-  );
-  /** @type {typeof import("../../../../src/generated/application/database/role.js").queryRole} */
-  const queryRole = await importProjectResource(
-    "./src/generated/application/database/role.js",
-    "queryRole",
-  );
 
   const authPlainPassword = "Test123!";
   const authEncryptedPassword =
