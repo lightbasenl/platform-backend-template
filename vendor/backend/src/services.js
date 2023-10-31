@@ -77,11 +77,29 @@ export let queries = undefined;
  */
 export let queryUser = undefined;
 
+/** @type {typeof import("../../../../../src/generated/application/database/sessionStore.js").querySessionStore} */
+export let querySessionStore = undefined;
+
+/** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
+export let queryRole = undefined;
+
+/** @type {typeof import("../../../../../src/generated/application/database/userRole.js").queryUserRole} */
+export let queryUserRole = undefined;
+
+/** @type {typeof import("../../../../../src/generated/application/database/permission.js").queryPermission} */
+export let queryPermission = undefined;
+
 /**
  * @type {typeof
  *   import("../../../src/generated/application/database/tenant.js").queryTenant}
  */
 export let queryTenant = undefined;
+
+/**
+ * @type {typeof
+ *    import("../../../src/generated/application/database/featureFlag.js").queryFeatureFlag}
+ */
+export let queryFeatureFlag = undefined;
 
 /**
  * @type {AuthUserQueryBuilder}
@@ -183,6 +201,22 @@ export async function backendInitServices(other) {
     "./src/generated/application/database/user.js",
     "queryUser",
   );
+  const importedQuerySessionStore = await importProjectResource(
+    "./src/generated/application/database/sessionStore.js",
+    "querySessionStore",
+  );
+  const importedQueryRole = await importProjectResource(
+    "./src/generated/application/database/role.js",
+    "queryRole",
+  );
+  const importedQueryUserRole = await importProjectResource(
+    "./src/generated/application/database/userRole.js",
+    "queryUserRole",
+  );
+  const importedQueryPermission = await importProjectResource(
+    "./src/generated/application/database/permission.js",
+    "queryPermission",
+  );
   const importedQueryTenant = await importProjectResource(
     "./src/generated/application/database/tenant.js",
     "queryTenant",
@@ -196,11 +230,20 @@ export async function backendInitServices(other) {
     "./src/generated/application/backend/validators.js",
     "validateBackendFeatureFlagDefinition",
   );
+  const importedQueryFeatureFlag = await importProjectResource(
+    "./src/generated/application/database/featureFlag.js",
+    "queryFeatureFlag",
+  );
 
   app = importedApp;
   sql = importedSql;
   queryUser = importedQueryUser;
+  querySessionStore = importedQuerySessionStore;
+  queryRole = importedQueryRole;
+  queryUserRole = importedQueryUserRole;
+  queryPermission = importedQueryPermission;
   queryTenant = importedQueryTenant;
+  queryFeatureFlag = importedQueryFeatureFlag;
 
   {
     const { value, error } = validateBackendFeatureFlagDefinition(

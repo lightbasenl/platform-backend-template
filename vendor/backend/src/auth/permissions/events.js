@@ -1,6 +1,10 @@
 import { AppError, eventStart, eventStop, isNil } from "@compas/stdlib";
-import { queries } from "../../services.js";
-import { importProjectResource } from "../../util.js";
+import {
+  queries,
+  queryPermission,
+  queryRole,
+  queryUserRole,
+} from "../../services.js";
 
 /**
  * Require role editable based on the provided id
@@ -20,13 +24,6 @@ export async function authPermissionRequireRole(
   roleObjectOrId,
 ) {
   eventStart(event, "authPermission.requireRole");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
-  const queryRole = await importProjectResource(
-    "./src/generated/application/database/role.js",
-    "queryRole",
-  );
-
   // @ts-expect-error
   const roleId = roleObjectOrId?.role ?? roleObjectOrId;
 
@@ -70,12 +67,6 @@ export async function authPermissionRequireRole(
  */
 export async function authPermissionSyncPermissions(event, sql, permissions) {
   eventStart(event, "authPermission.syncPermissions");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/permission.js").queryPermission} */
-  const queryPermission = await importProjectResource(
-    "./src/generated/application/database/permission.js",
-    "queryPermission",
-  );
 
   if (!Array.isArray(permissions)) {
     throw new TypeError("Expecting 'permissions' to be an array of strings.");
@@ -128,17 +119,6 @@ export async function authPermissionSyncMandatoryRoles(
   mandatoryRoles,
 ) {
   eventStart(event, "authPermission.syncMandatoryRoles");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
-  const queryRole = await importProjectResource(
-    "./src/generated/application/database/role.js",
-    "queryRole",
-  );
-  /** @type {typeof import("../../../../../src/generated/application/database/permission.js").queryPermission} */
-  const queryPermission = await importProjectResource(
-    "./src/generated/application/database/permission.js",
-    "queryPermission",
-  );
 
   /** @type {PermissionMandatoryRole[]} */
   const globalRoles = [];
@@ -253,12 +233,6 @@ export async function authPermissionSyncMandatoryRoles(
 export async function authPermissionPermissionList(event, sql) {
   eventStart(event, "authPermission.permissionList");
 
-  /** @type {typeof import("../../../../../src/generated/application/database/permission.js").queryPermission} */
-  const queryPermission = await importProjectResource(
-    "./src/generated/application/database/permission.js",
-    "queryPermission",
-  );
-
   const permissions = await queryPermission({
     orderBy: ["identifier"],
   }).exec(sql);
@@ -287,12 +261,6 @@ export async function authPermissionRoleList(
   staticRoleIds,
 ) {
   eventStart(event, "authPermission.roleList");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
-  const queryRole = await importProjectResource(
-    "./src/generated/application/database/role.js",
-    "queryRole",
-  );
 
   const dbRoles = await queryRole({
     where: {
@@ -347,12 +315,6 @@ export async function authPermissionRoleList(
  */
 export async function authPermissionCreateRole(event, sql, tenant, body) {
   eventStart(event, "authPermission.createRole");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
-  const queryRole = await importProjectResource(
-    "./src/generated/application/database/role.js",
-    "queryRole",
-  );
 
   const [existingRole] = await queryRole({
     where: {
@@ -410,12 +372,6 @@ export async function authPermissionRemoveRole(event, sql, role) {
  */
 export async function authPermissionRoleAddPermissions(event, sql, role, body) {
   eventStart(event, "authPermission.roleAddPermissions");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/permission.js").queryPermission} */
-  const queryPermission = await importProjectResource(
-    "./src/generated/application/database/permission.js",
-    "queryPermission",
-  );
 
   const dbPermissions = await queryPermission({
     where: {
@@ -543,12 +499,6 @@ export async function authPermissionUserAssignRole(
 ) {
   eventStart(event, "authPermission.userAssignRole");
 
-  /** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
-  const queryRole = await importProjectResource(
-    "./src/generated/application/database/role.js",
-    "queryRole",
-  );
-
   // @ts-expect-error
   if (user.roles.find((it) => it.role.id === body.role)) {
     throw AppError.validationError("authPermission.userAssignRole.userHasRole");
@@ -630,17 +580,6 @@ export async function authPermissionUserSyncRoles(
   { idIn, identifierIn },
 ) {
   eventStart(event, "authPermission.userSyncRoles");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
-  const queryRole = await importProjectResource(
-    "./src/generated/application/database/role.js",
-    "queryRole",
-  );
-  /** @type {typeof import("../../../../../src/generated/application/database/userRole.js").queryUserRole} */
-  const queryUserRole = await importProjectResource(
-    "./src/generated/application/database/userRole.js",
-    "queryUserRole",
-  );
 
   if (isNil(user?.id)) {
     throw AppError.validationError("authPermission.userSyncRoles.invalidUser");

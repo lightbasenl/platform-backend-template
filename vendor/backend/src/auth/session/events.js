@@ -8,14 +8,12 @@ import {
 import { query, sessionStoreGet } from "@compas/store";
 import {
   queries,
+  querySessionStore,
   sessionDeviceSettings,
   sessionStoreSettings,
   sql,
 } from "../../services.js";
-import {
-  importProjectResource,
-  normalizeSessionErrorsToUnauthorizedAndThrow,
-} from "../../util.js";
+import { normalizeSessionErrorsToUnauthorizedAndThrow } from "../../util.js";
 
 /**
  * List the sessions for the currently logged in user.
@@ -27,12 +25,6 @@ import {
  */
 export async function authSessionList(event, user, session) {
   eventStart(event, "authSession.list");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/sessionStore.js").querySessionStore} */
-  const querySessionStore = await importProjectResource(
-    "./src/generated/application/database/sessionStore.js",
-    "querySessionStore",
-  );
 
   const sessions = await querySessionStore({
     device: {},
@@ -78,12 +70,6 @@ export async function authSessionSetDeviceNotificationToken(
 ) {
   eventStart(event, "authSession.setDeviceNotificationToken");
 
-  /** @type {typeof import("../../../../../src/generated/application/database/sessionStore.js").querySessionStore} */
-  const querySessionStore = await importProjectResource(
-    "./src/generated/application/database/sessionStore.js",
-    "querySessionStore",
-  );
-
   const [userSession] = await querySessionStore({
     device: {},
     where: {
@@ -119,12 +105,6 @@ export async function authSessionSetDeviceNotificationToken(
  */
 export async function authSessionLogout(event, user, session, body) {
   eventStart(event, "authSession.logout");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/sessionStore.js").querySessionStore} */
-  const querySessionStore = await importProjectResource(
-    "./src/generated/application/database/sessionStore.js",
-    "querySessionStore",
-  );
 
   const [userSession] = await querySessionStore({
     where: {
@@ -162,12 +142,6 @@ export async function authSessionAppendDevice(
   device,
 ) {
   eventStart(event, "authSession.appendDevice");
-
-  /** @type {typeof import("../../../../../src/generated/application/database/sessionStore.js").querySessionStore} */
-  const querySessionStore = await importProjectResource(
-    "./src/generated/application/database/sessionStore.js",
-    "querySessionStore",
-  );
 
   if (!device && sessionDeviceSettings.requireDeviceInformationOnLogin) {
     throw AppError.validationError(`${event.name}.deviceRequired`);
