@@ -1,4 +1,5 @@
 import { eventStart, eventStop, newEventFromEvent } from "@compas/stdlib";
+import { multitenantRequireTenant } from "../multitenant/events.js";
 import { importProjectResource } from "../util.js";
 import { featureFlagCurrent, featureFlagSyncAvailableFlags } from "./events.js";
 
@@ -23,7 +24,12 @@ export async function featureFlagInit(event, sql) {
   );
 
   controller.featureFlagHandlers.current = async (ctx, next) => {
-    ctx.body = await featureFlagCurrent(newEventFromEvent(ctx.event));
+    const { tenant } = await multitenantRequireTenant(
+      newEventFromEvent(ctx.event),
+      ctx,
+    );
+
+    ctx.body = await featureFlagCurrent(newEventFromEvent(ctx.event), tenant);
 
     if (next) {
       return next();

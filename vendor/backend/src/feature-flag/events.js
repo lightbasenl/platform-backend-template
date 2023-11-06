@@ -2,12 +2,13 @@ import { AppError, eventStart, eventStop, isNil } from "@compas/stdlib";
 import { featureFlags, queries, queryFeatureFlag, sql } from "../services.js";
 
 /**
- * Get current feature flags
+ * Get current feature flags.
  *
  * @param {import("@compas/stdlib").InsightEvent} event
+ * @param {QueryResultBackendTenant} tenant
  * @returns {Promise<FeatureFlagCurrentResponse>}
  */
-export async function featureFlagCurrent(event) {
+export async function featureFlagCurrent(event, tenant) {
   eventStart(event, "featureFlag.current");
 
   const flags = await queryFeatureFlag({}).exec(sql);
@@ -26,7 +27,11 @@ export async function featureFlagCurrent(event) {
       continue;
     }
 
-    result[flag.name] = flag.globalValue;
+    const tenantSpecificValue = flag?.tenantValues?.[tenant?.id];
+
+    result[flag.name] = !isNil(tenantSpecificValue)
+      ? tenantSpecificValue
+      : flag.globalValue;
   }
 
   for (const flag of featureFlags.availableFlags) {
@@ -78,8 +83,7 @@ export async function featureFlagSyncAvailableFlags(event, sql) {
 }
 
 /**
- * Resolve the feature flag identifier. Ignores the provided tenant and user until a
- * later iteration.
+ * Resolve the feature flag identifier.
  *
  * @param {import("@compas/stdlib").InsightEvent} event
  * @param {BackendResolvedTenant} tenant
@@ -103,9 +107,11 @@ export async function featureFlagGetDynamic(event, tenant, user, identifier) {
     });
   }
 
+  const tenantSpecificValue = flag?.tenantValues?.[tenant?.tenant?.id];
+
   eventStop(event);
 
-  return flag.globalValue;
+  return !isNil(tenantSpecificValue) ? tenantSpecificValue : flag.globalValue;
 }
 
 /**
@@ -115,9 +121,15 @@ export async function featureFlagGetDynamic(event, tenant, user, identifier) {
  * @param {import("@compas/stdlib").InsightEvent} event
  * @param {FeatureFlagIdentifier} identifier
  * @param {boolean} value
+ * @param {BackendFeatureFlag["tenantValues"]} tenantValues
  * @returns {Promise<void>}
  */
-export async function featureFlagSetDynamic(event, identifier, value) {
+export async function featureFlagSetDynamic(
+  event,
+  identifier,
+  value,
+  tenantValues = undefined,
+) {
   eventStart(event, "featureFlag.setDynamic");
 
   const [flag] = await queryFeatureFlag({
@@ -139,6 +151,7 @@ export async function featureFlagSetDynamic(event, identifier, value) {
     },
     update: {
       globalValue: value,
+      tenantValues,
     },
   });
 
