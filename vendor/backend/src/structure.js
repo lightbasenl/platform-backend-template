@@ -100,6 +100,13 @@ export async function extendWithBackendBase(app) {
         name: T.string().searchable(),
         description: T.string().min(0).default(`""`),
         globalValue: T.bool().default(false),
+        tenantValues: T.generic()
+          .keys(T.uuid())
+          .values(T.bool())
+          .optional()
+          .docs(
+            "Specific settings for a tenant. We map the value based on the tenant ID. If there is no specific setting for the tenant the globalValue is used.",
+          ),
       })
       .enableQueries({
         withDates: true,

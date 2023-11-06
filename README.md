@@ -212,6 +212,7 @@ erDiagram
         boolean globalValue
         string description
         string name
+        generic tenantValues
         date createdAt
         date updatedAt
     }
