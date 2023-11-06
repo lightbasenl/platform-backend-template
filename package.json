@@ -7,19 +7,19 @@
     "start": "NODE_ENV=production node ./scripts/api.js"
   },
   "dependencies": {
-    "@compas/cli": "0.7.6",
-    "@compas/server": "0.7.6",
-    "@compas/stdlib": "0.7.6",
-    "@compas/store": "0.7.6",
-    "axios": "1.5.1",
+    "@compas/cli": "0.8.0",
+    "@compas/server": "0.8.0",
+    "@compas/stdlib": "0.8.0",
+    "@compas/store": "0.8.0",
+    "axios": "1.6.0",
     "form-data": "4.0.0",
     "mjml": "4.14.1",
     "nodemailer": "6.9.7",
     "nodemailer-html-to-text": "3.2.0"
   },
   "devDependencies": {
-    "@compas/code-gen": "0.7.6",
-    "@compas/eslint-plugin": "0.7.6",
+    "@compas/code-gen": "0.8.0",
+    "@compas/eslint-plugin": "0.8.0",
     "@types/mjml": "4.7.3",
     "@types/nodemailer": "6.4.13"
   },
