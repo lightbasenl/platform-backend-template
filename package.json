@@ -20,8 +20,8 @@
   "devDependencies": {
     "@compas/code-gen": "0.8.0",
     "@compas/eslint-plugin": "0.8.0",
-    "@types/mjml": "4.7.3",
-    "@types/nodemailer": "6.4.13"
+    "@types/mjml": "4.7.4",
+    "@types/nodemailer": "6.4.14"
   },
   "prettier": "@compas/eslint-plugin/prettierrc",
   "workspaces": [
