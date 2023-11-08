@@ -12,8 +12,8 @@ import { app } from "../services.js";
  */
 export function rateLimitInject() {
   const authPasswordBasedRateLimiter = new RateLimiterMemory({
-    // Allow 10 requests..
-    points: 10,
+    // Allow 11 requests..
+    points: 11,
 
     // every 60 seconds...
     duration: 60,
@@ -36,7 +36,12 @@ export function rateLimitInject() {
     }
 
     try {
-      await authPasswordBasedRateLimiter.consume(ctx.ip, 1);
+      // Limiting login attempts
+      if (ctx.path === "/auth/password-based/login") {
+        await authPasswordBasedRateLimiter.consume(ctx.ip, 2);
+      } else {
+        await authPasswordBasedRateLimiter.consume(ctx.ip, 1);
+      }
     } catch (e) {
       // Wrap-up, so upstream middleware will automatically set the correct response
       // status.
