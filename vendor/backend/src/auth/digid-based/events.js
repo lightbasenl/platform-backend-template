@@ -19,12 +19,7 @@ import xmldom from "@xmldom/xmldom";
 import axios from "axios";
 import xmlCrypto from "xml-crypto";
 import xpath from "xpath";
-import {
-  globalEventMetadata,
-  queries,
-  queryUser,
-  userBuilder,
-} from "../../services.js";
+import { queries, queryUser, userBuilder } from "../../services.js";
 import { authEventNames } from "../constants.js";
 
 const deflate = promisify(asyncDeflate);
@@ -97,7 +92,6 @@ export async function authDigidBasedRegister(event, sql, dbUser, body) {
     data: {
       digidLoginId: digidLogin.id,
       metadata: {
-        ...globalEventMetadata,
         ...(body.eventMetadata ?? {}),
       },
     },

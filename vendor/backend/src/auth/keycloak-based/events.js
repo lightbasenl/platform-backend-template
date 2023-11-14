@@ -7,12 +7,7 @@ import {
 } from "@compas/stdlib";
 import { queueWorkerAddJob } from "@compas/store";
 import axios from "axios";
-import {
-  globalEventMetadata,
-  queries,
-  queryUser,
-  userBuilder,
-} from "../../services.js";
+import { queries, queryUser, userBuilder } from "../../services.js";
 import { authEventNames } from "../constants.js";
 import { authCreateUser, authUserAddTenant } from "../user.events.js";
 
@@ -314,7 +309,6 @@ export async function authKeycloakBasedRegister(event, sql, dbUser, body) {
     data: {
       keycloakLoginId: keycloakLogin.id,
       metadata: {
-        ...globalEventMetadata,
         // @ts-expect-error
         ...(body.eventMetadata ?? {}),
       },

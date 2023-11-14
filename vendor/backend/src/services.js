@@ -47,13 +47,6 @@ export let shouldPasswordBasedUpdatePasswordRemoveCurrentSession = true;
 export let sessionDeviceSettings = {};
 
 /**
- * TODO: remove?
- *
- * @type {object}
- */
-export let globalEventMetadata = {};
-
-/**
  * @type {BackendFeatureFlagDefinition}
  */
 export let featureFlags = {
@@ -278,8 +271,6 @@ export async function backendInitServices(other) {
   shouldPasswordBasedUpdatePasswordRemoveCurrentSession =
     other.shouldPasswordBasedUpdatePasswordRemoveCurrentSession ?? true;
 
-  globalEventMetadata = other.eventMetadata ?? {};
-
   sessionDeviceSettings = other.sessionDeviceSettings ?? {};
 }
 
@@ -315,7 +306,6 @@ export function setSessionTransportAndStore(settings) {
  * Reset services to default values in between tests
  */
 export function backendResetServices() {
-  globalEventMetadata = {};
   featureFlags = {
     availableFlags: [],
   };

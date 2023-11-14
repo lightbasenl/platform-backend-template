@@ -4896,10 +4896,10 @@ quick-format-unescaped@^4.0.3:
   resolved "https://registry.yarnpkg.com/quick-format-unescaped/-/quick-format-unescaped-4.0.4.tgz#93ef6dd8d3453cbc7970dd614fad4c5954d6b5a7"
   integrity sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==
 
-rate-limiter-flexible@3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-3.0.3.tgz#a7573deb3f92e00fdc4b7ae8d34d13d5acd5815d"
-  integrity sha512-Wn9STZy2bKaWin9U54opnHvX14NNAlfLD+eiOTNNQnsIOd2A7Rnmt9msHWbUBloSEz2Nk1YTQ4CBa30TdlAgag==
+rate-limiter-flexible@3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-3.0.4.tgz#81e97f983a6119215e78c15a5f134709413ef97f"
+  integrity sha512-LFrdT9Pl/TRxG143frHBPyESXHvS2tstLfAUM6shBbJ3M6YssT2cIUWFwAWVAU9Vl4Z2gUN7ZE7tSdQh/0aqcA==
 
 raw-body@^2.3.3:
   version "2.5.1"

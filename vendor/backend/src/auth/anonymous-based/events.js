@@ -1,11 +1,6 @@
 import { AppError, eventStart, eventStop, isNil, uuid } from "@compas/stdlib";
 import { queueWorkerAddJob } from "@compas/store";
-import {
-  globalEventMetadata,
-  queries,
-  queryUser,
-  userBuilder,
-} from "../../services.js";
+import { queries, queryUser, userBuilder } from "../../services.js";
 import { authEventNames, authStringPrefixes } from "../constants.js";
 
 /**
@@ -148,7 +143,6 @@ export async function authAnonymousBasedRegister(event, sql, dbUser, body) {
     data: {
       anonymousLoginId: anonymousLogin.id,
       metadata: {
-        ...globalEventMetadata,
         ...(body.eventMetadata ?? {}),
       },
     },

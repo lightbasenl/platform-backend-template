@@ -10,7 +10,6 @@ import {
 import { query, queueWorkerAddJob } from "@compas/store";
 import speakeasy from "speakeasy";
 import {
-  globalEventMetadata,
   queries,
   queryPermission,
   queryRole,
@@ -1017,7 +1016,6 @@ export async function authSetUserActive(
       data: {
         userId: user.id,
         metadata: {
-          ...globalEventMetadata,
           tenant: {
             id: resolvedTenant.tenant.id,
             publicUrl: resolvedTenant.publicUrl,
