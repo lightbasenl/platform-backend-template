@@ -10,7 +10,6 @@ import { query, queueWorkerAddJob } from "@compas/store";
 import bcrypt from "bcrypt";
 import speakeasy from "speakeasy";
 import {
-  globalEventMetadata,
   passwordBasedForcePasswordResetAfterSixMonths,
   passwordBasedRollingLoginAttemptBlock,
   queries,
@@ -174,7 +173,6 @@ export async function authPasswordBasedLogin(event, sql, resolvedTenant, body) {
       passwordLoginId: user.passwordLogin.id,
       otp,
       metadata: {
-        ...globalEventMetadata,
         tenant: {
           id: resolvedTenant.tenant.id,
           publicUrl: resolvedTenant.publicUrl,
@@ -266,7 +264,6 @@ export async function authPasswordBasedUpdatePassword(
       // @ts-expect-error
       passwordLoginId: user.passwordLogin.id,
       metadata: {
-        ...globalEventMetadata,
         tenant: {
           id: resolvedTenant.tenant.id,
           publicUrl: resolvedTenant.publicUrl,
@@ -335,7 +332,6 @@ export async function authPasswordBasedUpdateEmail(
       passwordLoginId: user.passwordLogin.id,
       passwordLoginResetId: resetToken.id,
       metadata: {
-        ...globalEventMetadata,
         tenant: {
           id: resolvedTenant.tenant.id,
           publicUrl: resolvedTenant.publicUrl,
@@ -465,7 +461,6 @@ export async function authPasswordBasedVerifyEmail(
         // @ts-expect-error
         passwordLoginId: user.passwordLogin.id,
         metadata: {
-          ...globalEventMetadata,
           tenant: {
             id: resolvedTenant.tenant.id,
             publicUrl: resolvedTenant.publicUrl,
@@ -553,7 +548,6 @@ export async function authPasswordBasedResetPassword(
       // @ts-expect-error
       passwordLoginId: user.passwordLogin.id,
       metadata: {
-        ...globalEventMetadata,
         tenant: {
           id: resolvedTenant.tenant.id,
           publicUrl: resolvedTenant.publicUrl,
@@ -624,7 +618,6 @@ export async function authPasswordBasedForgotPassword(
       passwordLoginId: user.passwordLogin.id,
       passwordLoginResetId: resetToken.id,
       metadata: {
-        ...globalEventMetadata,
         tenant: {
           id: resolvedTenant.tenant.id,
           publicUrl: resolvedTenant.publicUrl,
@@ -733,7 +726,6 @@ export async function authPasswordBasedRegister(event, sql, dbUser, body) {
       passwordLoginId: passwordLogin.id,
       passwordLoginResetId: resetToken.id,
       metadata: {
-        ...globalEventMetadata,
         ...(body.eventMetadata ?? {}),
       },
     },

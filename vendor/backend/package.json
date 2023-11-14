@@ -15,7 +15,7 @@
   "dependencies": {
     "@xmldom/xmldom": "0.8.10",
     "bcrypt": "5.1.1",
-    "rate-limiter-flexible": "3.0.3",
+    "rate-limiter-flexible": "3.0.4",
     "speakeasy": "2.0.0",
     "xml-crypto": "4.1.0",
     "xpath": "0.0.33"
@@ -29,5 +29,5 @@
     "url": "https://github.com/lightbasenl/platform-components.git",
     "directory": "packages/backend"
   },
-  "gitHead": "38d0b2b6b8d92310a4668e93089cc76fefb2444d"
+  "gitHead": "a4a2180e05c584d0bb2c3e2ff11d9e6fe85b45c7"
 }
