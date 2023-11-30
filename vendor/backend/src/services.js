@@ -1,10 +1,5 @@
-import {
-  AppError,
-  environment,
-  isNil,
-  isPlainObject,
-  isStaging,
-} from "@compas/stdlib";
+import { AppError, environment, isNil, isStaging } from "@compas/stdlib";
+import { lpcInternalFeatureFlags } from "./constants.js";
 import { importProjectResource } from "./util.js";
 
 /**
@@ -140,7 +135,6 @@ export let sessionStoreSettings = {};
  * Optional items are;
  * - userBuilder: custom joins to add on all `QueryResultAuthUser` returns
  * - tenantBuilder: custom joins to add on all `QueryResultBackendTenant` returns
- * - eventMetadata: Metadata object to add to each fired event.
  * - shouldPasswordBasedForcePasswordResetAfterSixMonths: enforce password rotation
  * - shouldPasswordBasedRollingLoginAttemptBlock: block an password login after X failed
  * attempts in N time window
@@ -154,7 +148,6 @@ export let sessionStoreSettings = {};
  * @param {{
  *   userBuilder?: AuthUserQueryBuilder,
  *   tenantBuilder?: BackendTenantQueryBuilder,
- *   eventMetadata?: any,
  *   shouldPasswordBasedForcePasswordResetAfterSixMonths?: boolean,
  *   shouldPasswordBasedRollingLoginAttemptBlock?: boolean,
  *   shouldPasswordBasedUpdatePasswordRemoveCurrentSession?: boolean,
@@ -248,13 +241,14 @@ export async function backendInitServices(other) {
     }
 
     featureFlags = value;
-  }
 
-  if (!isNil(other.eventMetadata) && !isPlainObject(other.eventMetadata)) {
-    throw AppError.serverError({
-      message:
-        "If 'eventMetadata' is provided, it should be a plain old JS object.",
-    });
+    // Handle internal flags
+    featureFlags.availableFlags.push(...lpcInternalFeatureFlags);
+
+    // If no flags are available
+    if (featureFlags.availableFlags.length === 0) {
+      featureFlags.availableFlags.push("__FEATURE_LPC_EXAMPLE_FLAG");
+    }
   }
 
   if (other.userBuilder) {

@@ -9,6 +9,7 @@ import {
 import { query, queueWorkerAddJob } from "@compas/store";
 import bcrypt from "bcrypt";
 import speakeasy from "speakeasy";
+import { featureFlagGetDynamic } from "../../feature-flag/events.js";
 import {
   passwordBasedForcePasswordResetAfterSixMonths,
   passwordBasedRollingLoginAttemptBlock,
@@ -76,12 +77,26 @@ export async function authPasswordBasedLogin(event, sql, resolvedTenant, body) {
     },
   }).exec(sql);
 
-  if (isNil(user)) {
-    throw AppError.validationError("authPasswordBased.login.unknownEmail");
-  }
+  const reduceErrorKeyInfoFlag = await featureFlagGetDynamic(
+    newEventFromEvent(event),
+    undefined,
+    undefined,
+    "__FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO",
+  );
 
-  if (isNil(user.passwordLogin?.verifiedAt)) {
-    throw AppError.validationError("authPasswordBased.login.emailNotVerified");
+  if (isNil(user)) {
+    if (reduceErrorKeyInfoFlag) {
+      // Do some work to prevent time-base leaking that the user is known.
+      await bcrypt.compare(
+        "abcdefghijk",
+        `$2b$${BCRYPT_DEFAULT_COST}$t7oxiwchWGHa/B9w0AzrYO2WH2rQbA86YSuQjSTmwIrpC/0ZXN7V2`,
+      );
+      throw AppError.validationError(
+        "authPasswordBased.login.invalidEmailPasswordCombination",
+      );
+    } else {
+      throw AppError.validationError("authPasswordBased.login.unknownEmail");
+    }
   }
 
   if (passwordBasedRollingLoginAttemptBlock) {
@@ -107,8 +122,7 @@ export async function authPasswordBasedLogin(event, sql, resolvedTenant, body) {
   }
 
   const passwordCheck = await bcrypt.compare(
-    body.password,
-    // @ts-expect-error
+    body.password, // @ts-expect-error
     user.passwordLogin.password,
   );
 
@@ -122,6 +136,10 @@ export async function authPasswordBasedLogin(event, sql, resolvedTenant, body) {
     throw AppError.validationError(
       "authPasswordBased.login.invalidEmailPasswordCombination",
     );
+  }
+
+  if (isNil(user.passwordLogin?.verifiedAt)) {
+    throw AppError.validationError("authPasswordBased.login.emailNotVerified");
   }
 
   user.lastLogin = new Date();
@@ -168,8 +186,7 @@ export async function authPasswordBasedLogin(event, sql, resolvedTenant, body) {
     name: authEventNames.authPasswordBasedRequestOtp,
     priority: 4,
     data: {
-      userId: user.id,
-      // @ts-expect-error
+      userId: user.id, // @ts-expect-error
       passwordLoginId: user.passwordLogin.id,
       otp,
       metadata: {
@@ -247,13 +264,13 @@ export async function authPasswordBasedUpdatePassword(
   if (shouldPasswordBasedUpdatePasswordRemoveCurrentSession) {
     await queries.sessionStoreDelete(sql, {
       $raw: query`"data"->>'userId' =
-    ${user.id}`,
+      ${user.id}`,
     });
   } else {
     await queries.sessionStoreDelete(sql, {
       idNotEqual: ctxSession.id,
       $raw: query`"data"->>'userId' =
-    ${user.id}`,
+      ${user.id}`,
     });
   }
 
@@ -327,8 +344,7 @@ export async function authPasswordBasedUpdateEmail(
     priority: 4,
     data: {
       // @ts-expect-error
-      previousEmail: user.passwordLogin.email,
-      // @ts-expect-error
+      previousEmail: user.passwordLogin.email, // @ts-expect-error
       passwordLoginId: user.passwordLogin.id,
       passwordLoginResetId: resetToken.id,
       metadata: {
@@ -432,10 +448,23 @@ export async function authPasswordBasedVerifyEmail(
     (it) => it.resetToken === body.verifyToken,
   );
 
+  const reduceErrorKeyInfoFlag = await featureFlagGetDynamic(
+    newEventFromEvent(event),
+    undefined,
+    undefined,
+    "__FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO",
+  );
+
   if (token?.shouldSetPassword) {
-    throw AppError.validationError(
-      "authPasswordBased.verifyEmail.useResetPassword",
-    );
+    if (reduceErrorKeyInfoFlag) {
+      throw AppError.validationError(
+        "authPasswordBased.verifyEmail.invalidVerifyToken",
+      );
+    } else {
+      throw AppError.validationError(
+        "authPasswordBased.verifyEmail.useResetPassword",
+      );
+    }
   }
 
   // @ts-expect-error
@@ -520,16 +549,28 @@ export async function authPasswordBasedResetPassword(
     (it) => it.resetToken === body.resetToken,
   );
 
+  const reduceErrorKeyInfoFlag = await featureFlagGetDynamic(
+    newEventFromEvent(event),
+    undefined,
+    undefined,
+    "__FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO",
+  );
+
   if (!token?.shouldSetPassword) {
-    throw AppError.validationError(
-      "authPasswordBased.resetPassword.useVerifyEmail",
-    );
+    if (reduceErrorKeyInfoFlag) {
+      throw AppError.validationError(
+        "authPasswordBased.resetPassword.invalidResetToken",
+      );
+    } else {
+      throw AppError.validationError(
+        "authPasswordBased.resetPassword.useVerifyEmail",
+      );
+    }
   }
 
   await queries.passwordLoginUpdate(sql, {
     update: {
-      password: await bcrypt.hash(body.password, BCRYPT_DEFAULT_COST),
-      // @ts-expect-error
+      password: await bcrypt.hash(body.password, BCRYPT_DEFAULT_COST), // @ts-expect-error
       verifiedAt: user.passwordLogin.verifiedAt ?? new Date(),
     },
     where: {
@@ -593,7 +634,21 @@ export async function authPasswordBasedForgotPassword(
     },
   }).exec(sql);
 
+  const reduceErrorKeyInfoFlag = await featureFlagGetDynamic(
+    newEventFromEvent(event),
+    undefined,
+    undefined,
+    "__FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO",
+  );
+
   if (isNil(user)) {
+    if (reduceErrorKeyInfoFlag) {
+      // Silently ignore, we may want to do some work here still. However, the timing
+      // diff won't be that obvious like with password comparing.
+      eventStop(event);
+      return;
+    }
+
     throw AppError.validationError(
       "authPasswordBased.forgotPassword.unknownEmail",
     );
@@ -700,8 +755,7 @@ export async function authPasswordBasedRegister(event, sql, dbUser, body) {
 
   const [passwordLogin] = await queries.passwordLoginInsert(sql, {
     email: body.email,
-    password,
-    // @ts-expect-error
+    password, // @ts-expect-error
     user: dbUser.id,
     verifiedAt,
     otpEnabledAt: body.otpEnabledAt,

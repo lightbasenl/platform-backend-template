@@ -127,16 +127,18 @@ export async function extendWithAuthPasswordBased(app) {
 
     R.post("/verify-email", "verifyEmail")
       .docs(
-        `Verify an email based on the provided 'verifyToken'. The token is not removed
-until expired (after 24 hours). Does not throw on multiple calls with the same
-token. The first verification also updates the \`verifiedAt\` property on the
-\`passwordLogin\` entity. This route returns a token pair for a new session, which can be used to directly log the user in.
+        `
+        Verify an email based on the provided 'verifyToken'. The token is not removed
+        until expired (after 24 hours). Does not throw on multiple calls with the same
+        token. The first verification also updates the \`verifiedAt\` property on the
+        \`passwordLogin\` entity. This route returns a token pair for a new session, which can be used to directly log the user in.
 
-Errors:
-- \`authPasswordBased.verifyEmail.invalidVerifyToken\` -> unknown token or token
-  expired. Redirect user to do a ' forgotPassword' flow.
-- \`authPasswordBased.verifyEmail.useResetPassword\` -> token is for
-  \`resetPassword\` instead of \`verifyEmail\``,
+        Errors:
+        - \`authPasswordBased.verifyEmail.invalidVerifyToken\` -> unknown token or token
+            expired. Redirect user to do a 'forgotPassword' flow.
+        - \`authPasswordBased.verifyEmail.useResetPassword\` -> token is for
+            \`resetPassword\` instead of \`verifyEmail\` (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)
+        `,
       )
       .body({
         verifyToken: T.string().min(tokenLength),
@@ -151,7 +153,7 @@ tokens expire in 24 hours.
 
 Errors:
 - \`authPasswordBased.forgotPassword.unknownEmail\` -> email is unknown in the
-  platform`,
+  platform (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)`,
       )
       .body({
         email,
@@ -168,7 +170,7 @@ Errors:
 - \`authPasswordBased.resetPassword.invalidResetToken\` -> unknown token or
   expired. Let the user request a new token via \`forgotPassword\`
 - \`authPasswordBased.resetPassword.useVerifyEmail\` -> token is a verify token,
-  use \`verifyEmail\``,
+  use \`verifyEmail\` (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)`,
       )
       .body({
         resetToken: T.string().min(tokenLength),
@@ -182,12 +184,12 @@ Errors:
 
 Errors:
 - \`authPasswordBased.login.unknownEmail\` -> can't find a user with the provider
-  email
-- \`authPasswordBased.login.emailNotVerified\` -> the password login is not
-  verified
+  email (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)
 - \`authPasswordBased.login.maxAttemptsExceeded\` -> more then 10 login attempts done in a rolling 5 minute interval
 - \`authPasswordBased.login.invalidEmailPasswordCombination\` -> combination of
-  email and password is invalid`,
+  email and password is invalid
+- \`authPasswordBased.login.emailNotVerified\` -> the password login is not
+  verified `,
       )
       .body({
         email,
@@ -209,7 +211,7 @@ Errors:
 
     R.post("/update-password", "updatePassword")
       .docs(
-        `Set a new password fort the logged-in user. Destroys all active sessions
+        `Set a new password for the logged-in user. Destroys all active sessions
 afterwards.
 
 Errors:
