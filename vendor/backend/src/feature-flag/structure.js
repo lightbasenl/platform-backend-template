@@ -1,3 +1,5 @@
+import { lpcInternalFeatureFlags } from "../constants.js";
+
 /**
  * Extend the app with feature flag capabilities
  *
@@ -11,6 +13,8 @@ export async function extendWithFeatureFlag(app, options) {
   const { TypeCreator } = await import("@compas/code-gen");
   const T = new TypeCreator("featureFlag");
   const R = T.router("/feature-flag");
+
+  options.flagDefinition.availableFlags.push(...lpcInternalFeatureFlags);
 
   if (options.flagDefinition.availableFlags.length === 0) {
     // @ts-expect-error
