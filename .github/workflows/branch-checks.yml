@@ -25,7 +25,7 @@ jobs:
       # Reset the README.md after generate, else Prettier will fail
       - name: Run lint
         run: |
-          yarn install
+          yarn install --ignore-engines
           yarn compas generate application --skip-lint
           git checkout -- README.md
           yarn compas lint
@@ -46,7 +46,7 @@ jobs:
 
       - name: Run tests
         run: |
-          yarn install
+          yarn install --ignore-engines
           yarn compas generate application --skip-lint
           yarn compas docker up
           yarn compas migrate
