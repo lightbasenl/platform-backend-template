@@ -5,12 +5,12 @@ WORKDIR /app
 COPY ./vendor ./vendor
 COPY package.json yarn.lock ./
 
-RUN yarn --production=false
+RUN yarn --production=false --ignore-engines
 
 COPY . .
 RUN yarn compas generate application --skip-lint
 
-RUN yarn --production=true
+RUN yarn --production=true --ignore-engines
 
 FROM node:18-alpine
 
