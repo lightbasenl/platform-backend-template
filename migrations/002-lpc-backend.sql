@@ -1,20 +1,21 @@
 CREATE TABLE "tenant"
 (
-  "id"      uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-  "name"    varchar          NOT NULL,
-  "data"    jsonb            NOT NULL
+  "id"   uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  "name" varchar          NOT NULL,
+  "data" jsonb            NOT NULL
 );
 
 CREATE UNIQUE INDEX "tenantNameIdx" ON "tenant" ("name");
 
 CREATE TABLE "featureFlag"
 (
-  "id"          uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-  "globalValue" boolean     NOT NULL,
-  "description" varchar     NOT NULL,
-  "name"        varchar     NOT NULL,
-  "createdAt" timestamptz NOT NULL DEFAULT now(),
-  "updatedAt" timestamptz NOT NULL DEFAULT now()
+  "id"           uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  "globalValue"  boolean          NOT NULL,
+  "description"  varchar          NOT NULL,
+  "name"         varchar          NOT NULL,
+  "tenantValues" jsonb            NULL,
+  "createdAt"    timestamptz      NOT NULL DEFAULT now(),
+  "updatedAt"    timestamptz      NOT NULL DEFAULT now()
 );
 
 CREATE INDEX "featureFlagDatesIdx" ON "featureFlag" ("createdAt", "updatedAt");
@@ -35,21 +36,22 @@ CREATE INDEX "userDeletedAtIdx" ON "user" ("deletedAt");
 
 CREATE TABLE "device"
 (
-  "id"                  uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-  "session"             uuid        NOT NULL,
-  "name"                varchar     NOT NULL,
-  "platform"            varchar     NOT NULL,
-  "notificationToken"   varchar     NULL,
-  "createdAt"           timestamptz NOT NULL DEFAULT now(),
-  "updatedAt"           timestamptz NOT NULL DEFAULT now(),
-  constraint "deviceSessionFk" foreign key ("session") references "sessionStore" ("id") ON DELETE CASCADE
+  "id"                 uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  "session"            uuid             NOT NULL,
+  "name"               varchar          NOT NULL,
+  "platform"           varchar          NOT NULL,
+  "notificationToken"  varchar          NULL,
+  "webPushInformation" jsonb            NULL,
+  "createdAt"          timestamptz      NOT NULL DEFAULT now(),
+  "updatedAt"          timestamptz      NOT NULL DEFAULT now(),
+  CONSTRAINT "deviceSessionFk" FOREIGN KEY ("session") REFERENCES "sessionStore" ("id") ON DELETE CASCADE
 );
 
 CREATE INDEX "deviceDatesIdx" ON "device" ("createdAt", "updatedAt");
 CREATE INDEX "deviceSessionIdx" ON "device" ("session");
 
 -- Index the userId value that we use
-CREATE INDEX "sessionStoreUserIdIdx" ON "sessionStore" ((("data"->>'userId')::uuid));
+CREATE INDEX "sessionStoreUserIdIdx" ON "sessionStore" ((("data" ->> 'userId')::uuid));
 
 CREATE TABLE IF NOT EXISTS "userTenant"
 (
@@ -64,15 +66,15 @@ CREATE UNIQUE INDEX "userTenantUniqIdx" ON "userTenant" ("user", "tenant");
 
 CREATE TABLE "passwordLogin"
 (
-  "id"              uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-  "user"            uuid            NOT NULL,
-  "email"           varchar         NOT NULL,
-  "password"        varchar         NOT NULL,
-  "otpSecret"       varchar         NULL,
-  "otpEnabledAt"    timestamptz     NULL,
-  "verifiedAt"      timestamptz     NULL,
-  "createdAt"       timestamptz     NOT NULL DEFAULT now(),
-  "updatedAt"       timestamptz     NOT NULL DEFAULT now(),
+  "id"           uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  "user"         uuid             NOT NULL,
+  "email"        varchar          NOT NULL,
+  "password"     varchar          NOT NULL,
+  "otpSecret"    varchar          NULL,
+  "otpEnabledAt" timestamptz      NULL,
+  "verifiedAt"   timestamptz      NULL,
+  "createdAt"    timestamptz      NOT NULL DEFAULT now(),
+  "updatedAt"    timestamptz      NOT NULL DEFAULT now(),
   CONSTRAINT "passwordLoginUserFk" FOREIGN KEY ("user") REFERENCES "user" ("id") ON DELETE CASCADE
 );
 
@@ -98,11 +100,11 @@ CREATE INDEX "passwordLoginResetResetTokenIdx" ON "passwordLoginReset" ("resetTo
 
 CREATE TABLE "passwordLoginAttempt"
 (
-  "id"              uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-  "passwordLogin"   uuid            NOT NULL,
-  "createdAt"       timestamptz     NOT NULL DEFAULT now(),
-  "updatedAt"       timestamptz     NOT NULL DEFAULT now(),
-  CONSTRAINT "passwordLoginAttemptPasswordLoginFk" foreign key ("passwordLogin") references "passwordLogin" ("id") ON DELETE CASCADE
+  "id"            uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  "passwordLogin" uuid             NOT NULL,
+  "createdAt"     timestamptz      NOT NULL DEFAULT now(),
+  "updatedAt"     timestamptz      NOT NULL DEFAULT now(),
+  CONSTRAINT "passwordLoginAttemptPasswordLoginFk" FOREIGN KEY ("passwordLogin") REFERENCES "passwordLogin" ("id") ON DELETE CASCADE
 );
 
 CREATE INDEX "passwordLoginAttemptPasswordLoginIdx" ON "passwordLoginAttempt" ("passwordLogin");
