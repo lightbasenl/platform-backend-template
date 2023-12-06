@@ -189,6 +189,7 @@ erDiagram
         string name
         string platform
         string notificationToken
+        object webPushInformation
         date createdAt
         date updatedAt
     }

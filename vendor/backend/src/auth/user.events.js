@@ -765,8 +765,8 @@ export async function authCombineUsers(
       [
         `UPDATE "${relation.table}"
                    SET
-                     "${relation.col[0]}" =`,
-        `WHERE "${relation.col[0]}" = `,
+                     "${relation.col[0]}" = `,
+        ` WHERE "${relation.col[0]}" = `,
         `;`,
       ],
       newUser.id,

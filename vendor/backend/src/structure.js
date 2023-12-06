@@ -130,6 +130,10 @@ export async function extendWithBackendBase(app) {
         platform: T.string().oneOf("apple", "android", "desktop", "other"),
         name: T.string(),
         notificationToken: T.string().optional(),
+        webPushInformation: T.reference(
+          "session",
+          "webPushInformation",
+        ).optional(),
       })
       .enableQueries({
         withDates: true,
