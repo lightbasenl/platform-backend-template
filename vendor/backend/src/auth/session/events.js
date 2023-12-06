@@ -43,6 +43,7 @@ export async function authSessionList(event, user, session) {
             name: it.device.name,
             platform: it.device.platform,
             notificationToken: it.device.notificationToken,
+            webPushInformation: it.device.webPushInformation,
           }
         : undefined,
     })),
@@ -82,12 +83,28 @@ export async function authSessionSetDeviceNotificationToken(
     throw AppError.validationError(`${event.name}.unknown`);
   }
 
+  if (
+    userSession.device.platform === "desktop" &&
+    (isNil(body.webPushInformation) || !isNil(body.notificationToken))
+  ) {
+    throw AppError.validationError(`${event.name}.invalid`);
+  }
+
+  if (
+    (userSession.device.platform === "apple" ||
+      userSession.device.platform === "android") &&
+    (isNil(body.notificationToken) || !isNil(body.webPushInformation))
+  ) {
+    throw AppError.validationError(`${event.name}.invalid`);
+  }
+
   await queries.deviceUpdate(sql, {
     where: {
       id: userSession.device.id,
     },
     update: {
       notificationToken: body.notificationToken,
+      webPushInformation: body.webPushInformation,
     },
   });
 
