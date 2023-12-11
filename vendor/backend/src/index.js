@@ -75,7 +75,10 @@ export { extendWithAuthKeycloakBased } from "./auth/keycloak-based/structure.js"
 export { authKeycloakBasedRegister } from "./auth/keycloak-based/events.js";
 
 export { extendWithAuthPasswordBased } from "./auth/password-based/structure.js";
-export { authPasswordBasedRegister } from "./auth/password-based/events.js";
+export {
+  authPasswordBasedRegister,
+  authPasswordBasedVerifyEmail,
+} from "./auth/password-based/events.js";
 export { authPasswordBasedInvalidateResetTokens } from "./auth/password-based/jobs.js";
 
 export { extendWithAuthTotpProvider } from "./auth/totp-provider/structure.js";
