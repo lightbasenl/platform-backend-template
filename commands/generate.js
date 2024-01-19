@@ -87,7 +87,7 @@ async function cliExecutor(logger, state) {
 
   if (!opts.skipLint) {
     logger.info(`[2/2] Running linter`);
-    await spawn("yarn", ["compas", "lint"]);
+    await spawn("npx", ["compas", "lint"]);
   } else {
     logger.info(`[2/2] Skipped linter`);
   }

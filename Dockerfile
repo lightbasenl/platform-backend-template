@@ -3,14 +3,14 @@ FROM node:18-alpine as deps
 WORKDIR /app
 
 COPY ./vendor ./vendor
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN yarn --production=false --ignore-engines
+RUN npm install
 
 COPY . .
-RUN yarn compas generate application --skip-lint
+RUN npx compas generate application --skip-lint
 
-RUN yarn --production=true --ignore-engines
+RUN npm install --omit=dev
 
 FROM node:18-alpine
 
