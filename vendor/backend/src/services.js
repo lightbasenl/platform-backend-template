@@ -68,6 +68,9 @@ export let queryUser = undefined;
 /** @type {typeof import("../../../../../src/generated/application/database/sessionStore.js").querySessionStore} */
 export let querySessionStore = undefined;
 
+/** @type {typeof import("../../../../../src/generated/application/database/device.js").queryDevice} */
+export let queryDevice = undefined;
+
 /** @type {typeof import("../../../../../src/generated/application/database/role.js").queryRole} */
 export let queryRole = undefined;
 
@@ -128,6 +131,17 @@ export let sessionTransportSettings = {};
 //
 // Initializes later
 export let sessionStoreSettings = {};
+
+/**
+ * @type {(session: QueryResultStoreSessionStore, user: QueryResultAuthUser, device:
+ *   QueryResultBackendDevice) => { accessTokenMaxAgeInSeconds: number,
+ *   refreshTokenMaxAgeInSeconds: number,
+ * }}
+ */
+export let sessionDurationCallback = () => ({
+  accessTokenMaxAgeInSeconds: sessionStoreSettings.accessTokenMaxAgeInSeconds,
+  refreshTokenMaxAgeInSeconds: sessionStoreSettings.refreshTokenMaxAgeInSeconds,
+});
 
 /**
  * Set various services used by this package to add routes, implement logic, etc.
@@ -191,6 +205,10 @@ export async function backendInitServices(other) {
     "./src/generated/application/database/sessionStore.js",
     "querySessionStore",
   );
+  const importedQueryDevice = await importProjectResource(
+    "./src/generated/application/database/device.js",
+    "queryDevice",
+  );
   const importedQueryRole = await importProjectResource(
     "./src/generated/application/database/role.js",
     "queryRole",
@@ -225,6 +243,7 @@ export async function backendInitServices(other) {
   sql = importedSql;
   queryUser = importedQueryUser;
   querySessionStore = importedQuerySessionStore;
+  queryDevice = importedQueryDevice;
   queryRole = importedQueryRole;
   queryUserRole = importedQueryUserRole;
   queryPermission = importedQueryPermission;
@@ -286,6 +305,10 @@ export function setSessionTransportAndStore(settings) {
 
   sessionTransportSettings = settings;
   sessionStoreSettings = settings.sessionStoreSettings;
+
+  if (settings.sessionDurationCallback) {
+    sessionDurationCallback = settings.sessionDurationCallback;
+  }
 
   if (isNil(sessionStoreSettings.signingKey)) {
     if (!isStaging()) {

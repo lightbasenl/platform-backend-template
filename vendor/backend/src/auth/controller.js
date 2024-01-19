@@ -1,7 +1,14 @@
 import { newEventFromEvent } from "@compas/stdlib";
 import { sessionStoreRefreshTokens } from "@compas/store";
 import { backendGetTenantAndUser } from "../events.js";
-import { queries, sessionStoreSettings, sql } from "../services.js";
+import {
+  queries,
+  queryDevice,
+  queryUser,
+  sessionDurationCallback,
+  sessionStoreSettings,
+  sql,
+} from "../services.js";
 import {
   importProjectResource,
   normalizeSessionErrorsToUnauthorizedAndThrow,
@@ -50,7 +57,23 @@ export async function applyAuthController() {
     const refreshResult = await sessionStoreRefreshTokens(
       newEventFromEvent(ctx.event),
       sql,
-      sessionStoreSettings,
+      {
+        ...sessionStoreSettings,
+        tokenMaxAgeResolver: async (sql, session) => {
+          const [user] = await queryUser({
+            where: {
+              id: session.data.userId,
+            },
+          }).exec(sql);
+          const [device] = await queryDevice({
+            where: {
+              session: session.id,
+            },
+          }).exec(sql);
+
+          return sessionDurationCallback(session, user, device);
+        },
+      },
       ctx.validatedBody.refreshToken,
     );
 
