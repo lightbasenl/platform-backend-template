@@ -9,7 +9,7 @@ test("repo/migrations", (t) => {
     const mc = await migrationsInitContext(sql);
     const { migrationQueue, hashChanges } = await migrationsGetInfo(mc);
 
-    const message = `Tests are not running with the latest migrations, please run 'yarn compas docker clean --project && yarn compas migrate'.`;
+    const message = `Tests are not running with the latest migrations, please run 'npx compas docker clean --project && npx compas migrate'.`;
     t.equal(migrationQueue.length, 0, message);
     t.equal(hashChanges.length, 0, message);
   });

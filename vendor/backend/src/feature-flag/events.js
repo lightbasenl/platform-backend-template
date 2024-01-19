@@ -27,7 +27,7 @@ export async function featureFlagCurrent(event, tenant) {
       continue;
     }
 
-    const tenantSpecificValue = flag?.tenantValues?.[tenant?.id];
+    const tenantSpecificValue = flag?.tenantValues?.[tenant?.name];
 
     result[flag.name] = !isNil(tenantSpecificValue)
       ? tenantSpecificValue
@@ -107,7 +107,7 @@ export async function featureFlagGetDynamic(event, tenant, user, identifier) {
     });
   }
 
-  const tenantSpecificValue = flag?.tenantValues?.[tenant?.tenant?.id];
+  const tenantSpecificValue = flag?.tenantValues?.[tenant?.tenant?.name];
 
   eventStop(event);
 

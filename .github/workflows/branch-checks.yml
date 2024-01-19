@@ -20,15 +20,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "yarn"
+          cache: "npm"
 
       # Reset the README.md after generate, else Prettier will fail
       - name: Run lint
         run: |
-          yarn install --ignore-engines
-          yarn compas generate application --skip-lint
+          npm install
+          npx compas generate application --skip-lint
           git checkout -- README.md
-          yarn compas lint
+          npx compas lint
 
   test:
     timeout-minutes: 15
@@ -42,12 +42,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "yarn"
+          cache: "npm"
 
       - name: Run tests
         run: |
-          yarn install --ignore-engines
-          yarn compas generate application --skip-lint
-          yarn compas docker up
-          yarn compas migrate
-          yarn compas test
+          npm install
+          npx compas generate application --skip-lint
+          npx compas docker up
+          npx compas migrate
+          npx compas test

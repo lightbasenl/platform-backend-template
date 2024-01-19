@@ -2,7 +2,11 @@ import { newEventFromEvent } from "@compas/stdlib";
 import { sessionStoreCreate, sessionStoreInvalidate } from "@compas/store";
 import { backendGetTenantAndUser } from "../../events.js";
 import { multitenantRequireTenant } from "../../multitenant/events.js";
-import { sessionStoreSettings, sql } from "../../services.js";
+import {
+  sessionDurationCallback,
+  sessionStoreSettings,
+  sql,
+} from "../../services.js";
 import {
   importProjectResource,
   normalizeSessionErrorsToUnauthorizedAndThrow,
@@ -143,7 +147,15 @@ export async function applyKeycloakBasedController(settings) {
       const newSessionResult = await sessionStoreCreate(
         newEventFromEvent(ctx.event),
         sql,
-        sessionStoreSettings,
+        {
+          ...sessionStoreSettings,
+          tokenMaxAgeResolver: (sql, session) => {
+            return sessionDurationCallback(session, user, {
+              session: session.id,
+              ...ctx.validatedBody.device,
+            });
+          },
+        },
         {
           type: "user",
           loginType: "keycloakBased",

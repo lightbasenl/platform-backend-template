@@ -5,24 +5,24 @@ A Compas backend platform template to use as a start for new projects.
 ## Getting started
 
 ```shell script
-yarn
+npm install
 
 # generate command
-yarn compas generate application
+npx compas generate application
 
 # Run required Postgres and S3 services
-yarn compas docker up
-yarn compas migrate
+npx compas docker up
+npx compas migrate
 
 # run api & queue
-yarn compas run api
-yarn compas run queue
+npx compas run api
+npx compas run queue
 
 # run all test cases
-yarn compas test --serial
+npx compas test --serial
 
 # other commands
-yarn compas help
+npx compas help
 ```
 
 ## Structure and recommended use

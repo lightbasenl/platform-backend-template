@@ -49,8 +49,13 @@ import { sql } from "./services.js";
  * @property {import("@compas/store").SessionTransportSettings & {
  *     sessionStoreSettings: (import("@compas/store").SessionStoreSettings & {
  *   signingKey?: string|undefined })
+ *   } & {
+ *     overrideSessionStoreSettingsCallback: (
+ *       session: QueryResultStoreSessionStore,
+ *       user: QueryResultAuthuser,
+ *     ) => Partial<import("@compas/store").SessionStoreSettings>
  *   }} sessionTransportSettings Compas session transport and store settings. The signing
- *   key is injected in development and on production it defaults to
+ *   key is injected in development, and in production it defaults to
  *   'environment.APP_KEYS'.
  * @property {string[]} [permissionIdentifiers]
  * @property {AuthCombineUserCallbacks} [combineUserCallbacks] Combine users on login,
