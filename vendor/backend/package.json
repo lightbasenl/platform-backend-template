@@ -18,7 +18,7 @@
     "rate-limiter-flexible": "4.0.0",
     "speakeasy": "2.0.0",
     "xml-crypto": "5.1.1",
-    "xpath": "0.0.33"
+    "xpath": "0.0.34"
   },
   "peerDependencies": {
     "@compas/stdlib": "*",
