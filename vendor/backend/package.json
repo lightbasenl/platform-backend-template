@@ -15,10 +15,10 @@
   "dependencies": {
     "@xmldom/xmldom": "0.8.10",
     "bcrypt": "5.1.1",
-    "rate-limiter-flexible": "4.0.0",
+    "rate-limiter-flexible": "4.0.1",
     "speakeasy": "2.0.0",
     "xml-crypto": "5.1.1",
-    "xpath": "0.0.33"
+    "xpath": "0.0.34"
   },
   "peerDependencies": {
     "@compas/stdlib": "*",
@@ -29,5 +29,5 @@
     "url": "https://github.com/lightbasenl/platform-components.git",
     "directory": "packages/backend"
   },
-  "gitHead": "f5b906c504cc7b4ac2982b1fa7bdae48447d493f"
+  "gitHead": "36ad128b09f1a719a0f1bb4495228548be37d8cb"
 }
