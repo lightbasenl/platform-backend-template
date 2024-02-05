@@ -40,5 +40,3 @@ explanations for the below points under the description.
       fixes.
 
 **Description**
-
-…
