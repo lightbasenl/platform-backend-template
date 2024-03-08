@@ -98,6 +98,20 @@ export async function authSessionSetDeviceNotificationToken(
     throw AppError.validationError(`${event.name}.invalid`);
   }
 
+  if (body.notificationToken) {
+    // Prevent multiple sessions on a single mobile device.
+    await queries.sessionStoreDelete(sql, {
+      idNotEqual: userSession.id,
+      $raw: query`ss."data"->>'userId' = ${user.id}`,
+      viaDevice: {
+        where: {
+          $raw: query`d."notificationToken" =
+        ${body.notificationToken}`,
+        },
+      },
+    });
+  }
+
   await queries.deviceUpdate(sql, {
     where: {
       id: userSession.device.id,
