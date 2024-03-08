@@ -2,58 +2,39 @@
 version: 2
 
 updates:
-  # Only enable NPM ecosystem. GitHub action updates are still managed via Sync
-  - package-ecosystem: npm
-    # We can't explicitly ignore `vendor/`...
+  - package-ecosystem: "github-actions"
     directory: "/"
-    # Run all groups weekly
+    schedule:
+      interval: weekly
+      day: "monday"
+    groups:
+      all:
+        patterns:
+          - "*"
+
+  - package-ecosystem: npm
+    directory: "/"
     schedule:
       interval: weekly
       day: wednesday
     # Fail-safe limit
     open-pull-requests-limit: 10
-    # Always increase the version in the package.json
     versioning-strategy: increase
-    # The different groups. These are matched in the order they are defined.
-    # We even have groups with a single package in them, so we don't have to repeat exclusion rules.
     groups:
-      # Separate group for Compas. We need to update all packages at the same time. And has different impact than other dependencies
-      compas:
-        patterns:
-          - "@compas*"
-
-      # Single group for Typescript, since it doesn't follow SemVer.
-      typescript:
-        patterns:
-          - "typescript"
-
-      # Single group for Next.js. It's updates may require different major / minor updates of dependencies.
+      # Single group for Next.js. Its updates may require different major / minor updates of dependencies.
       next:
         patterns:
           - "next"
 
-      # Major updates for production dependencies
-      major-prod:
+      # Updates for production dependencies
+      production:
         dependency-type: production
-        update-types:
-          - "major"
 
-      # Minor updates for production dependencies
-      minor-prod:
-        dependency-type: production
-        update-types:
-          - "minor"
-          - "patch"
-
-      # Major updates for development dependencies
-      major-dev:
+      # Updates for development dependencies
+      development:
         dependency-type: development
-        update-types:
-          - "major"
 
-      # Minor updates for development dependencies
-      minor-dev:
-        dependency-type: development
-        update-types:
-          - "minor"
-          - "patch"
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
