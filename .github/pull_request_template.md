@@ -15,8 +15,6 @@ explanations for the below points under the description.
       [tests](https://www.notion.so/lightbase/End-to-end-testing-07267aec731943049cc06364aa0233b8).
 - [ ] The PR does use a
       [feature flag](https://www.notion.so/lightbase/Feature-flags-dbeb321e2393422da410a9289f8392b6).
-- [ ] The PR does not introduce an (indirect) breaking change.
-- [ ] The PR does not expose unnecessary fields.
 - [ ] The PR includes technical documentation in the appropriate places. Any
       additional detail should be provided in the description.
   - Route definitions including documented error keys.
@@ -27,16 +25,20 @@ explanations for the below points under the description.
     [technical debt](https://www.notion.so/Technical-debt-refactoring-eabbdee2b66945d7b55517f92cca20bb)
     is marked with a TODO comment.
   - Obsolete comments are removed.
-- [ ] The PR includes manual input validation when necessary
-- [ ] The PR includes correct error handling of external services
-- [ ] The PR does not add a new dependency. Follow
+
+<!-- Other points to manually check and if necessary elaborate below in the description
+
+- The PR includes manual input validation when necessary
+- The PR includes correct error handling of external services
+- The PR does not add a new dependency. Follow
       [this document](https://www.notion.so/lightbase/Introducing-dependencies-ac169cfeafb44782bded308810237737)
       and add the link to in the description.
-- [ ] The PR does not introduce a N+1 query.
-- [ ] The PR does not include over-fetching via database queries.
-- [ ] The PR does not include unrelated changes.
-- [ ] The PR does not include `// eslint-disable` comments.
-- [ ] The PR does not mix dependency updates and refactoring with features and
+- The PR does not introduce a N+1 query.
+- The PR does not include over-fetching via database queries.
+- The PR does not include unrelated changes.
+- The PR does not include `// eslint-disable` comments.
+- The PR does not mix dependency updates and refactoring with features and
       fixes.
+-->
 
 **Description**
