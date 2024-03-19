@@ -1,9 +1,9 @@
-[Reviewers guide](https://www.notion.so/lightbase/Pull-request-PR-reviews-Frontend-66f65f2fc91948a79d8f53a138e6f422)
+**Description**
 
 **Checklist**
 
 Please check the following items before submitting the PR. Add relevant
-explanations for the below points under the description.
+explanations for these points above in the description.
 
 - [ ] The PR title is in line with the following examples:
   - `chore(ci): add speedups to lint job`
@@ -26,7 +26,7 @@ explanations for the below points under the description.
     is marked with a TODO comment.
   - Obsolete comments are removed.
 
-<!-- Other points to manually check and if necessary elaborate below in the description
+<!-- Other points to manually check and if necessary, elaborate on in the description
 
 - The PR includes manual input validation when necessary
 - The PR includes correct error handling of external services
@@ -41,4 +41,4 @@ explanations for the below points under the description.
       fixes.
 -->
 
-**Description**
+[Reviewers guide](https://www.notion.so/lightbase/Pull-request-PR-reviews-Frontend-66f65f2fc91948a79d8f53a138e6f422)
