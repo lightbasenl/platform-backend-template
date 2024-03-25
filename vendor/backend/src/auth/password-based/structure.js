@@ -136,8 +136,6 @@ export async function extendWithAuthPasswordBased(app) {
         Errors:
         - \`authPasswordBased.verifyEmail.invalidVerifyToken\` -> unknown token or token
             expired. Redirect user to do a 'forgotPassword' flow.
-        - \`authPasswordBased.verifyEmail.useResetPassword\` -> token is for
-            \`resetPassword\` instead of \`verifyEmail\` (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)
         `,
       )
       .body({
@@ -152,8 +150,7 @@ export async function extendWithAuthPasswordBased(app) {
 tokens expire in 24 hours.
 
 Errors:
-- \`authPasswordBased.forgotPassword.unknownEmail\` -> email is unknown in the
-  platform (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)`,
+`,
       )
       .body({
         email,
@@ -169,8 +166,7 @@ be called multiple times.
 Errors:
 - \`authPasswordBased.resetPassword.invalidResetToken\` -> unknown token or
   expired. Let the user request a new token via \`forgotPassword\`
-- \`authPasswordBased.resetPassword.useVerifyEmail\` -> token is a verify token,
-  use \`verifyEmail\` (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)`,
+`,
       )
       .body({
         resetToken: T.string().min(tokenLength),
@@ -183,8 +179,6 @@ Errors:
         `Do a password based login, requires a verified email.
 
 Errors:
-- \`authPasswordBased.login.unknownEmail\` -> can't find a user with the provider
-  email (unused after __FEATURE_LPC_AUTH_REDUCE_ERROR_KEY_INFO)
 - \`authPasswordBased.login.maxAttemptsExceeded\` -> more then 10 login attempts done in a rolling 5 minute interval
 - \`authPasswordBased.login.invalidEmailPasswordCombination\` -> combination of
   email and password is invalid
