@@ -7,10 +7,10 @@
     "start": "NODE_ENV=production node ./scripts/api.js"
   },
   "dependencies": {
-    "@compas/cli": "0.10.0",
-    "@compas/server": "0.10.0",
-    "@compas/stdlib": "0.10.0",
-    "@compas/store": "0.10.0",
+    "@compas/cli": "0.10.4",
+    "@compas/server": "0.10.4",
+    "@compas/stdlib": "0.10.4",
+    "@compas/store": "0.10.4",
     "axios": "1.6.8",
     "form-data": "4.0.0",
     "mjml": "4.15.3",
