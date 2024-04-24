@@ -18,8 +18,8 @@
     "nodemailer-html-to-text": "3.2.0"
   },
   "devDependencies": {
-    "@compas/code-gen": "0.10.0",
-    "@compas/eslint-plugin": "0.10.0",
+    "@compas/code-gen": "0.10.6",
+    "@compas/eslint-plugin": "0.10.6",
     "@types/mjml": "4.7.4",
     "@types/nodemailer": "6.4.14"
   },
