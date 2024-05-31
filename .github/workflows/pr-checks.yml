@@ -48,3 +48,6 @@ jobs:
           npx compas docker up
           npx compas migrate
           npx compas test
+
+  license-checker:
+    uses: lightbasenl/platforms/.github/workflows/lib-license-checker.yml@main
