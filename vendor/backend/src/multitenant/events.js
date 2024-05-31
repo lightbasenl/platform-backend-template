@@ -5,9 +5,8 @@ import {
   eventStop,
   isNil,
   isProduction,
-  uuid,
 } from "@compas/stdlib";
-import { queryTenant, sql, tenantBuilder } from "../services.js";
+import { tenantCache } from "./cache.js";
 import { multitenantLoadConfig } from "./config.js";
 
 const tenantOriginHeaderName = `x-lpc-tenant-origin`;
@@ -67,17 +66,7 @@ async function multitenantLoadByNameOrId(idOrName) {
     throw AppError.validationError(`multitenant.require.invalidTenant`);
   }
 
-  const where = {};
-  if (uuid.isValid(idOrName)) {
-    where.id = idOrName;
-  } else {
-    where.name = idOrName;
-  }
-
-  const [tenant] = await queryTenant({
-    ...tenantBuilder,
-    where,
-  }).exec(sql);
+  const tenant = await tenantCache.get(idOrName);
 
   if (isNil(tenantsByName[tenant?.name])) {
     throw AppError.validationError(`multitenant.require.invalidTenant`);
@@ -211,13 +200,7 @@ export async function multitenantLoadByContext(ctx) {
     throw AppError.validationError(`multitenant.require.invalidTenant`);
   }
 
-  const [tenant] = await queryTenant({
-    ...tenantBuilder,
-    where: {
-      name: configTenant.name,
-    },
-  }).exec(sql);
-
+  const tenant = await tenantCache.get(configTenant.name);
   if (isNil(tenant)) {
     throw AppError.validationError(`multitenant.require.invalidTenant`);
   }
