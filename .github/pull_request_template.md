@@ -10,7 +10,7 @@ explanations for these points above in the description.
   - `fix(user): always show the email in the profile drop down`
   - `feat(tags): add SVG symbols to the tag cards`
 - [ ] The PR is implemented according to the Acceptance Criteria. Include a link
-      to the ticket `[XYZ-123]` in the description.
+      to Jira or Sentry in the description.
 - [ ] The PR includes appropriate
       [tests](https://www.notion.so/lightbase/End-to-end-testing-07267aec731943049cc06364aa0233b8).
 - [ ] The PR does use a
@@ -26,7 +26,10 @@ explanations for these points above in the description.
     is marked with a TODO comment.
   - Obsolete comments are removed.
 
-<!-- Other points to manually check and if necessary, elaborate on in the description
+<!-- Other information and points to manually check and if necessary, elaborate on in the description
+
+Jira's links are automatically expanded. So you can write `[JIRA-123]`, which a Jira bot will automatically resolve into a valid url after you have updated a PR comment or description.
+Sentry links can be easily copied from the Sentry Issue page by clicking the 'chevron-down' icon -> 'Copy markdown link'.
 
 - The PR includes manual input validation when necessary
 - The PR includes correct error handling of external services
