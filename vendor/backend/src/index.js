@@ -7,6 +7,7 @@ export { backendGetTenantAndUser } from "./events.js";
 export { extendWithManagement } from "./management/structure.js";
 export { managementInvalidateUsers } from "./management/jobs.js";
 
+export { tenantCache } from "./multitenant/cache.js";
 export {
   multitenantConfigForTenant,
   multitenantEnabledTenantNames,
@@ -17,6 +18,7 @@ export {
 } from "./multitenant/events.js";
 
 export { extendWithFeatureFlag } from "./feature-flag/structure.js";
+export { featureFlagCache } from "./feature-flag/cache.js";
 export {
   featureFlagGetDynamic,
   featureFlagSetDynamic,

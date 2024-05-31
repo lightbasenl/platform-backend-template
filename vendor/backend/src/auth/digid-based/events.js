@@ -38,13 +38,6 @@ const cryptoSignAlgorithm = "RSA-SHA256";
 let certificateChain = undefined;
 
 /**
- * Public key used to verify payload signatures that we got from DigiD
- *
- * @type {string|undefined}
- */
-let digidPublicKey = undefined;
-
-/**
  * @typedef {object} AuthDigidBasedRegisterBody
  * @property {string} bsn
  * @property {object|undefined} [eventMetadata]
@@ -552,7 +545,9 @@ async function authDigidBasedVerifySignaturesForXmlPayload(event, payload) {
 
   for (const sig of signatures) {
     const xmlSigner = new xmlCrypto.SignedXml({
-      publicCert: getDigidPublicKey(),
+      getCertFromKeyInfo: xmlCrypto.SignedXml.getCertFromKeyInfo,
+      canonicalizationAlgorithm: "http://www.w3.org/2001/10/xml-exc-c14n#",
+      signatureAlgorithm,
     });
 
     xmlSigner.loadSignature(sig);
@@ -670,12 +665,22 @@ function authDigidBasedVerifyArtifactStatus(
   subStatus,
   subSubStatus,
 ) {
+  const errInfo = AppError.serverError({
+    mainStatus,
+    subStatus,
+    subSubStatus,
+  });
+
   if (mainStatus.indexOf("urn:oasis:names:tc:SAML:2.0:status:Success") !== -1) {
     if (
       subSubStatus.indexOf("urn:oasis:names:tc:SAML:2.0:status:AuthnFailed") !==
       -1
     ) {
-      throw new AppError("authDigidBased.resolveArtifact.aborted", 401);
+      throw new AppError(
+        "authDigidBased.resolveArtifact.aborted",
+        401,
+        errInfo,
+      );
     }
     return;
   }
@@ -690,7 +695,7 @@ function authDigidBasedVerifyArtifactStatus(
   if (
     subStatus.indexOf("urn:oasis:names:tc:SAML:2.0:status:AuthnFailed") !== -1
   ) {
-    throw new AppError("authDigidBased.resolveArtifact.aborted", 401);
+    throw new AppError("authDigidBased.resolveArtifact.aborted", 401, errInfo);
   }
 
   if (
@@ -700,19 +705,27 @@ function authDigidBasedVerifyArtifactStatus(
     throw new AppError(
       "authDigidBased.resolveArtifact.insufficientSecurityLevel",
       401,
+      errInfo,
     );
   }
 
   if (
     subStatus.indexOf("urn:oasis:names:tc:SAML:2.0:status:RequestDenied") !== -1
   ) {
-    throw new AppError("authDigidBased.resolveArtifact.invalidSAMLArt", 401);
+    throw new AppError(
+      "authDigidBased.resolveArtifact.invalidSAMLArt",
+      401,
+      errInfo,
+    );
   }
 
-  throw AppError.serverError({
-    message: "Unknown DigiD SAML error when resolving artifact",
-    ourError,
-  });
+  throw AppError.serverError(
+    {
+      message: "Unknown DigiD SAML error when resolving artifact",
+      ourError,
+    },
+    errInfo,
+  );
 }
 
 /**
@@ -754,27 +767,4 @@ function getCertificateChain() {
   }
 
   return certificateChain;
-}
-
-/**
- * Sync read operation, since it only happens once.
- *
- * @returns {string}
- */
-function getDigidPublicKey() {
-  if (isNil(digidPublicKey)) {
-    if (isStaging()) {
-      digidPublicKey = readFileSync(
-        pathJoin(dirnameForModule(import.meta), "assets/digid-dev.pub.pem"),
-        "utf-8",
-      );
-    } else {
-      digidPublicKey = readFileSync(
-        pathJoin(dirnameForModule(import.meta), "assets/digid-prod.pub.pem"),
-        "utf-8",
-      );
-    }
-  }
-
-  return digidPublicKey;
 }

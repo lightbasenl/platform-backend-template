@@ -13,9 +13,10 @@
   ],
   "scripts": {},
   "dependencies": {
+    "@lightbase/pull-through-cache": "0.1.2",
     "@xmldom/xmldom": "0.8.10",
     "bcrypt": "5.1.1",
-    "rate-limiter-flexible": "5.0.0",
+    "rate-limiter-flexible": "5.0.3",
     "speakeasy": "2.0.0",
     "xml-crypto": "6.0.0",
     "xpath": "0.0.34"
@@ -29,5 +30,5 @@
     "url": "https://github.com/lightbasenl/platform-components.git",
     "directory": "packages/backend"
   },
-  "gitHead": "10d17891e252e6f8d231a26057f41ea8189ee3ea"
+  "gitHead": "b335a6c8aa6f5e14489b582b02b6fa45beda00b6"
 }
