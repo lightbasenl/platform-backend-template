@@ -15,6 +15,10 @@ explanations for these points above in the description.
       [tests](https://www.notion.so/lightbase/End-to-end-testing-07267aec731943049cc06364aa0233b8).
 - [ ] The PR does use a
       [feature flag](https://www.notion.so/lightbase/Feature-flags-dbeb321e2393422da410a9289f8392b6).
+- [ ] The PR includes a migration which might impact production performance. If
+      so, notify the people that manage production.
+- [ ] The PR includes an impactful change in the amount of jobs or external API
+      calls. If so elaborate in the description.
 - [ ] The PR includes technical documentation in the appropriate places. Any
       additional detail should be provided in the description.
   - Route definitions including documented error keys.
