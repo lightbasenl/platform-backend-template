@@ -13,7 +13,7 @@
   ],
   "scripts": {},
   "dependencies": {
-    "@lightbase/pull-through-cache": "0.1.2",
+    "@lightbase/pull-through-cache": "0.2.0",
     "@xmldom/xmldom": "0.8.10",
     "bcrypt": "5.1.1",
     "rate-limiter-flexible": "5.0.3",
