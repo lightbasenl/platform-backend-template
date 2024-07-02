@@ -1,6 +1,7 @@
 import { AppError } from "@compas/stdlib";
 import { PullThroughCache } from "@lightbase/pull-through-cache";
 import { queryFeatureFlag, sql } from "../services.js";
+import { cacheEventToSentryMetric } from "../util.js";
 
 /**
  * Short TTL feature flag cache. Keeps all flags for 5 seconds in memory,
@@ -16,6 +17,9 @@ export const featureFlagCache = new PullThroughCache()
   })
   .withFetcher({
     fetcher: featureFlagFetcher,
+  })
+  .withEventCallback({
+    callback: cacheEventToSentryMetric("featureFlag"),
   });
 
 /**
