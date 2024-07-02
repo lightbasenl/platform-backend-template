@@ -158,8 +158,7 @@ export async function featureFlagSetDynamic(
 
   if (featureFlagCache.isEnabled()) {
     // Clear the cache if enabled. This method function is often only used in test code, which most likely disables the cache anyways.
-    featureFlagCache.disable();
-    featureFlagCache.enable();
+    featureFlagCache.clearAll();
   }
 
   eventStop(event);
