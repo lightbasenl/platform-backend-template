@@ -134,7 +134,7 @@ export async function multitenantLoadConfig() {
 /**
  * Get a list of all enabled tenants in the current environment.
  *
- * @returns {Promise<string[]>}
+ * @returns {Promise<Array<string>>}
  */
 export async function multitenantEnabledTenantNames() {
   const { tenantsByName } = await multitenantLoadConfig();

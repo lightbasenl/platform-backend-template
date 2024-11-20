@@ -1,5 +1,24 @@
 import { existsSync } from "node:fs";
-import { AppError, isNil, pathJoin } from "@compas/stdlib";
+import { _compasSentryExport, AppError, isNil, pathJoin } from "@compas/stdlib";
+
+/**
+ * Count the different PullThroughCache events as their own metric
+ *
+ * @param {string} cacheName
+ * @returns {(function(string): void)}
+ */
+export function cacheEventToSentryMetric(cacheName) {
+  return (event) => {
+    if (_compasSentryExport?.metrics?.increment) {
+      _compasSentryExport.metrics.increment(`cache.${event}`, 1, {
+        tags: {
+          cacheName,
+        },
+        unit: "none",
+      });
+    }
+  };
+}
 
 /**
  * Takes an AppError and normalizes it to a 401, to simplify frontend error handling on
@@ -35,13 +54,18 @@ export function normalizeSessionErrorsToUnauthorizedAndThrow(error) {
  * @returns {Promise<any>}
  */
 export async function importProjectResource(path, destructureValue) {
-  const importPath = pathJoin(process.cwd(), path);
+  let importPath = pathJoin(process.cwd(), path);
+
   if (!existsSync(importPath)) {
-    throw AppError.serverError({
-      message: "ImportProjectResourcePathNotFound",
-      inputPath: path,
-      determinedPath: importPath,
-    });
+    // Attempt to load TS files. This happens for example in the new test setup.
+    importPath = importPath.replace(".js", ".ts");
+    if (!existsSync(importPath)) {
+      throw AppError.serverError({
+        message: "ImportProjectResourcePathNotFound",
+        inputPath: path,
+        determinedPath: importPath,
+      });
+    }
   }
 
   try {

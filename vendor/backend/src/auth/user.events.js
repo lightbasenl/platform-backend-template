@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/check-types */
+
 import {
   AppError,
   eventStart,
@@ -10,6 +12,7 @@ import {
 import { query, queueWorkerAddJob } from "@compas/store";
 import speakeasy from "speakeasy";
 import {
+  onAuthRequireUserCallback,
   queries,
   queryPermission,
   queryRole,
@@ -89,7 +92,10 @@ const authQueries = {
  * @property {boolean|undefined} [requireDigidBased]
  * @property {boolean|undefined} [requireKeycloakBased]
  * @property {boolean|undefined} [requirePasswordBased]
- * @property {AuthPermissionIdentifier[]|undefined} [requiredPermissions]
+ * @property {AuthPermissionIdentifier[]|undefined} [requiredPermissions] Require all
+ *   provided permissions
+ * @property {AuthPermissionIdentifier[]|undefined} [oneOfRequiredPermissions] Require
+ *   one of the provided permissions
  */
 
 /**
@@ -271,13 +277,14 @@ export async function authCreateUser(event, sql, data, options) {
  *     isVerified?: boolean,
  *   },
  *   withPermissions?: {
- *     permissions?: AuthPermissionIdentifier[],
- *     roles?: string[],
+ *     permissions?: Array<AuthPermissionIdentifier>,
+ *     roles?: Array<string>,
  *   },
  *   withMultitenant?: {
  *     syncUsersAcrossAllTenants?: boolean,
- *     tenants?: string[],
- *   }
+ *     tenants?: Array<string>,
+ *   },
+ *   userProperties?: Partial<AuthUser>,
  * }} options
  * @returns {Promise<QueryResultAuthUser>}
  */
@@ -323,6 +330,7 @@ export async function authTestCreateUser(event, sql, options = {}) {
       sql,
       {
         name: `Test user ${uuid()}`,
+        ...options.userProperties,
       },
       {
         withMultitenant: {
@@ -633,8 +641,8 @@ export async function authRequireUser(
   }
 
   if (
-    Array.isArray(options.requiredPermissions) &&
-    options.requiredPermissions.length > 0
+    Array.isArray(options.requiredPermissions) ||
+    Array.isArray(options.oneOfRequiredPermissions)
   ) {
     const permissionSet = new Set();
     // @ts-expect-error
@@ -645,19 +653,37 @@ export async function authRequireUser(
       }
     }
 
-    const missingPermissions = [];
-    for (const requiredPermission of options.requiredPermissions) {
-      if (!permissionSet.has(requiredPermission)) {
-        missingPermissions.push(requiredPermission);
+    if (options.requiredPermissions) {
+      const missingPermissions = [];
+      for (const requiredPermission of options.requiredPermissions) {
+        if (!permissionSet.has(requiredPermission)) {
+          missingPermissions.push(requiredPermission);
+        }
+      }
+
+      if (missingPermissions.length > 0) {
+        throw AppError.validationError(`${eventKey}.missingPermissions`, {
+          missingPermissions,
+        });
+      }
+    } else if (options.oneOfRequiredPermissions) {
+      let hasOnePermission = false;
+      for (const requiredPermission of options.oneOfRequiredPermissions) {
+        if (permissionSet.has(requiredPermission)) {
+          hasOnePermission = true;
+          break;
+        }
+      }
+
+      if (!hasOnePermission) {
+        throw AppError.validationError(`${eventKey}.missingPermissions`, {
+          missingPermissions: options.oneOfRequiredPermissions,
+        });
       }
     }
-
-    if (missingPermissions.length > 0) {
-      throw AppError.validationError(`${eventKey}.missingPermissions`, {
-        missingPermissions,
-      });
-    }
   }
+
+  onAuthRequireUserCallback(user);
 
   eventStop(event);
 

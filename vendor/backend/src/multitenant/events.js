@@ -143,7 +143,8 @@ export async function multitenantLoadByContext(ctx) {
       configTenant?.urlConfig ?? {},
     )) {
       if (spec.apiUrl === hostWithoutProtocol) {
-        // We can't really check if the publicUrl is same as origin, since SSR does not send an origin header
+        // We can't really check if the publicUrl is same as origin, since SSR does not send an
+        // origin header
         result.publicUrl = `${ctx.protocol}://${publicUrl}`;
         break;
       }
@@ -182,7 +183,8 @@ export async function multitenantLoadByContext(ctx) {
           configTenant?.urlConfig ?? {},
         )) {
           if (spec.apiUrl === hostWithoutProtocol) {
-            // We can't really check if the publicUrl is same as origin, since SSR / Apps does not send an origin header
+            // We can't really check if the publicUrl is same as origin, since SSR / Apps does not
+            // send an origin header
             result.publicUrl = `${ctx.protocol}://${publicUrl}`;
             break;
           }

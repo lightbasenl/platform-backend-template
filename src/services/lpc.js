@@ -1,11 +1,11 @@
 import { newEvent } from "@compas/stdlib";
+import { buildMandatoryRoles, permissions } from "../constants.js";
+import { serviceLogger } from "./logger.js";
 import {
   authPermissions,
   backendInit,
   backendInitServices,
 } from "@lightbasenl/backend";
-import { buildMandatoryRoles, permissions } from "../constants.js";
-import { serviceLogger } from "./logger.js";
 
 /**
  * @returns {Promise<void>}

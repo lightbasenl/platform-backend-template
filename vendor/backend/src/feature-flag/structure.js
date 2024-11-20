@@ -5,7 +5,7 @@ import { lpcInternalFeatureFlags } from "../constants.js";
  *
  * @param {import("@compas/code-gen").App} app
  * @param {{
- *  flagDefinition: BackendFeatureFlagDefinitionInput,
+ *  flagDefinition: BackendFeatureFlagDefinition,
  * }} options
  * @returns {Promise<void>}
  */

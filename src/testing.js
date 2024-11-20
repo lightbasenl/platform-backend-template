@@ -4,10 +4,6 @@ import {
   cleanupTestPostgresDatabase,
   objectStorageRemoveBucket,
 } from "@compas/store";
-import {
-  authInjectTokenInterceptors,
-  multitenantInjectAxios,
-} from "@lightbasenl/backend";
 import axios from "axios";
 import { axiosInterceptErrorAndWrapWithAppError } from "./generated/application/common/api-client.js";
 import {
@@ -25,6 +21,10 @@ import {
   serviceS3EnsureBuckets,
   serviceS3Init,
 } from "./services/s3.js";
+import {
+  authInjectTokenInterceptors,
+  multitenantInjectAxios,
+} from "@lightbasenl/backend";
 
 /**
  * Initialize all services based on an empty database and fresh s3 bucket.

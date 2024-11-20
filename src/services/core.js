@@ -5,7 +5,7 @@ import { AppError, environment } from "@compas/stdlib";
  * This method should be used as guard during startup to ensure non-unexpected
  * code paths are hit during runtime.
  *
- * @param {string[]} requiredEnvironmentVariables
+ * @param {Array<string>} requiredEnvironmentVariables
  * @returns {void}
  */
 export function ensureEnvironmentVars(requiredEnvironmentVariables) {

@@ -42,7 +42,7 @@ export async function mailSendGeneric(event, email, payload) {
  * @param {function(MailAddressHeaders, T): MailTemplateResponse} template
  * @param {MailAddressHeaders} addresses
  * @param {T} [payload={}]
- * @param {import("@types/nodemailer").Attachment[]} [attachments]
+ * @param {Array<import("@types/nodemailer").Attachment>} [attachments]
  * @returns {Promise<void>}
  */
 async function mailSend(
@@ -92,9 +92,9 @@ async function mailSend(
  * Construct a mail header object for nodemailer
  *
  * @param {MailAddress} from
- * @param {MailAddress|MailAddress[]} to
- * @param {MailAddress[]|undefined} [cc]
- * @param {MailAddress[]|undefined} [bcc]
+ * @param {MailAddress | Array<MailAddress>} to
+ * @param {Array<MailAddress> | undefined} [cc]
+ * @param {Array<MailAddress> | undefined} [bcc]
  * @returns {MailAddressHeaders}
  */
 function constructMailAddressHeaders(from, to, cc, bcc) {

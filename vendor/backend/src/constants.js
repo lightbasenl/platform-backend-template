@@ -1,6 +1,6 @@
 /**
  * LPC Internal feature flags
  *
- * @type {string[]}
+ * @type {Array<string>}
  */
 export const lpcInternalFeatureFlags = [];

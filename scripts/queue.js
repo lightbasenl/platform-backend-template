@@ -11,12 +11,6 @@ import {
   queueWorkerRegisterCronJobs,
 } from "@compas/store";
 import {
-  authEventNames,
-  authJobNames,
-  authPasswordBasedInvalidateResetTokens,
-  managementInvalidateUsers,
-} from "@lightbasenl/backend";
-import {
   authAnonymousBasedUserRegisteredEvent,
   authPasswordBasedEmailUpdatedEvent,
   authPasswordBasedForgotPasswordEvent,
@@ -29,6 +23,12 @@ import { injectServices } from "../src/service.js";
 import { serviceLogger } from "../src/services/logger.js";
 import { sql } from "../src/services/postgres.js";
 import { bucketName, s3Client } from "../src/services/s3.js";
+import {
+  authEventNames,
+  authJobNames,
+  authPasswordBasedInvalidateResetTokens,
+  managementInvalidateUsers,
+} from "@lightbasenl/backend";
 
 mainFn(import.meta, main);
 

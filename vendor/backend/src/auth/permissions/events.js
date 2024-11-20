@@ -12,7 +12,7 @@ import {
  * @param {import("@compas/stdlib").InsightEvent} event
  * @param {import("@compas/store").Postgres} sql
  * @param {QueryResultBackendTenant} tenant
- * @param {string[]} staticRoleIds
+ * @param {Array<string>} staticRoleIds
  * @param {string|{ role: string}} roleObjectOrId
  * @returns {Promise<QueryResultAuthRole>}
  */
@@ -62,7 +62,7 @@ export async function authPermissionRequireRole(
  *
  * @param {import("@compas/stdlib").InsightEvent} event
  * @param {import("@compas/store").Postgres} sql
- * @param {string[]} permissions
+ * @param {Array<string>} permissions
  * @returns {Promise<void>}
  */
 export async function authPermissionSyncPermissions(event, sql, permissions) {
@@ -110,8 +110,8 @@ export async function authPermissionSyncPermissions(event, sql, permissions) {
  *
  * @param {import("@compas/stdlib").InsightEvent} event
  * @param {import("@compas/store").Postgres} sql
- * @param {PermissionMandatoryRole[]} mandatoryRoles
- * @returns {Promise<{ staticRoleIds: string[] }>}
+ * @param {Array<PermissionMandatoryRole>} mandatoryRoles
+ * @returns {Promise<{staticRoleIds: Array<string>}>}
  */
 export async function authPermissionSyncMandatoryRoles(
   event,
@@ -120,9 +120,9 @@ export async function authPermissionSyncMandatoryRoles(
 ) {
   eventStart(event, "authPermission.syncMandatoryRoles");
 
-  /** @type {PermissionMandatoryRole[]} */
+  /** @type {Array<PermissionMandatoryRole>} */
   const globalRoles = [];
-  /** @type {Record<string, import("./controller").PermissionMandatoryRole[]>} */
+  /** @type {Record<string, Array<import("./controller").PermissionMandatoryRole>>} */
   const byTenant = {};
 
   for (const role of mandatoryRoles) {
@@ -251,7 +251,7 @@ export async function authPermissionPermissionList(event, sql) {
  * @param {import("@compas/stdlib").InsightEvent} event
  * @param {import("@compas/store").Postgres} sql
  * @param {QueryResultBackendTenant} tenant
- * @param {string[]} staticRoleIds
+ * @param {Array<string>} staticRoleIds
  * @returns {Promise<AuthPermissionRoleListResponse>}
  */
 export async function authPermissionRoleList(
@@ -558,8 +558,8 @@ export async function authPermissionUserRemoveRole(event, sql, user, body) {
 
 /**
  * @typedef {object} AuthPermissionUserSyncRolesOptions
- * @property {string[]|undefined} [idIn]
- * @property {string[]|undefined} [identifierIn]
+ * @property {Array<string> | undefined} [idIn]
+ * @property {Array<string> | undefined} [identifierIn]
  */
 
 /**

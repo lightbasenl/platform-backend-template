@@ -15,7 +15,7 @@ import {
   uuid,
 } from "@compas/stdlib";
 import { queueWorkerAddJob } from "@compas/store";
-import xmldom from "@xmldom/xmldom";
+import xmldom, { MIME_TYPE } from "@xmldom/xmldom";
 import axios from "axios";
 import xmlCrypto from "xml-crypto";
 import xpath from "xpath";
@@ -362,7 +362,10 @@ export async function authDigidBasedResolveArtifact(
     );
   }
 
-  const doc = new xmldom.DOMParser().parseFromString(xmlResponse);
+  const doc = new xmldom.DOMParser().parseFromString(
+    xmlResponse,
+    MIME_TYPE.XML_APPLICATION,
+  );
   const [mainStatus, subStatus, subSubStatus] = xpath.select(
     "//*[local-name(.)='StatusCode']/@Value",
     doc,
@@ -534,7 +537,10 @@ async function authDigidBasedGetSignatureForPayload(
 async function authDigidBasedVerifySignaturesForXmlPayload(event, payload) {
   eventStart(event, "authDigidBased.verifySignaturesForXmlPayload");
 
-  const doc = new xmldom.DOMParser().parseFromString(payload);
+  const doc = new xmldom.DOMParser().parseFromString(
+    payload,
+    MIME_TYPE.XML_APPLICATION,
+  );
   const signatures = xpath.select("//*[local-name(.)='Signature']", doc);
   if (signatures.length === 0) {
     throw AppError.serverError({

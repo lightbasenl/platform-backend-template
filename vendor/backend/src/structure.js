@@ -96,6 +96,17 @@ export async function extendWithBackendBase(app) {
       ),
 
     T.object("featureFlag")
+      .docs(
+        `
+     Layered feature-flag settings:
+     
+     - Global setting
+     - Tenant setting
+     - User setting
+     
+     A flag is returned enabled if user or tenant or global value is enabled.    
+     `,
+      )
       .keys({
         name: T.string().searchable(),
         description: T.string().min(0).default(`""`),
@@ -107,6 +118,11 @@ export async function extendWithBackendBase(app) {
           .docs(
             "Specific settings for a tenant. We map the value based on the tenant name. If there is no specific setting for the tenant the globalValue is used.",
           ),
+        userValues: T.generic()
+          .keys(T.uuid())
+          .values(T.bool())
+          .optional()
+          .docs(`Specific settings per user.`),
       })
       .enableQueries({
         withDates: true,
@@ -293,6 +309,10 @@ export async function extendWithBackendBase(app) {
     T.object("resolvedTenant").keys({
       tenant: T.any().implementations({
         js: {
+          validatorInputType: "any",
+          validatorOutputType: "QueryResultBackendTenant",
+        },
+        ts: {
           validatorInputType: "any",
           validatorOutputType: "QueryResultBackendTenant",
         },

@@ -200,6 +200,7 @@ erDiagram
         string description
         string name
         generic tenantValues
+        generic userValues
         date createdAt
         date updatedAt
     }

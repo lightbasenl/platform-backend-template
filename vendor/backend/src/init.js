@@ -57,7 +57,7 @@ import { sql } from "./services.js";
  *   }} sessionTransportSettings Compas session transport and store settings. The signing
  *   key is injected in development, and in production it defaults to
  *   'environment.APP_KEYS'.
- * @property {string[]} [permissionIdentifiers]
+ * @property {Array<string>} [permissionIdentifiers]
  * @property {AuthCombineUserCallbacks} [combineUserCallbacks] Combine users on login,
  *   for example to upgrade anonymous user to password based user and keep things like a
  *   shopping cart.
@@ -74,6 +74,9 @@ import { sql } from "./services.js";
  * .PasswordBasedSettings} [passwordBased] Inject password-based login with options
  * @property {import("./auth/totp-provider/controller")
  * .TotpProviderSettings} [totpProvider] Inject totp provider with options
+ * @property {import("./auth/apply")
+ * .AuthDetermineTwoStepCheckFunction} [determineTwoStepCheckFunction] Inject custom function to
+ *   determine whether 2FA should be used for the current user
  */
 
 /**
