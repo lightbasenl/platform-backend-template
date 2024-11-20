@@ -115,7 +115,8 @@ export async function slackInvalidateConversations(event) {
       });
 
       if (!ok && error === "message_not_found") {
-        // Message could be removed by another instance of LPC which is executing this function, so we can safely continue;
+        // Message could be removed by another instance of LPC which is executing this function, so
+        // we can safely continue;
         continue;
       }
 

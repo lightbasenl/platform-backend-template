@@ -17,9 +17,28 @@ import { applyTotpProviderController } from "./totp-provider/controller.js";
 
 /**
  * @typedef {(
- *     user: QueryResultAuthUser
- *   ) => AuthDetermineTwoStepResult} AuthDetermineTwoStepCheckFunction
+ *     ctx: import("koa").ExtendableContext, user: QueryResultAuthUser
+ *   ) => Promise<AuthDetermineTwoStepResult>|AuthDetermineTwoStepResult}
+ *   AuthDetermineTwoStepCheckFunction
  */
+
+/**
+ * @type {AuthDetermineTwoStepCheckFunction}
+ */
+export const authDefaultDetermineTwoStepFunction = (ctx, user) => {
+  if (!isNil(user?.totpSettings?.verifiedAt)) {
+    return {
+      type: "checkTwoStep",
+      twoStepType: "totpProvider",
+    };
+  } else if (!isNil(user?.passwordLogin?.otpEnabledAt)) {
+    // TODO: what should happen if the user didn't login via passwordLogin?
+    return {
+      type: "checkTwoStep",
+      twoStepType: "passwordBasedOtp",
+    };
+  }
+};
 
 /**
  * Apply the auth package with the provided settings.
@@ -37,24 +56,9 @@ export async function applyAuth({
   keycloakBased,
   passwordBased,
   totpProvider,
+  determineTwoStepFunction,
 }) {
-  /**
-   * @type {AuthDetermineTwoStepCheckFunction}
-   */
-  const determineTwoStepFunction = (user) => {
-    if (!isNil(user?.totpSettings?.verifiedAt)) {
-      return {
-        type: "checkTwoStep",
-        twoStepType: "totpProvider",
-      };
-    } else if (!isNil(user?.passwordLogin?.otpEnabledAt)) {
-      // TODO: what should happen if the user didn't login via passwordLogin?
-      return {
-        type: "checkTwoStep",
-        twoStepType: "passwordBasedOtp",
-      };
-    }
-  };
+  determineTwoStepFunction ??= authDefaultDetermineTwoStepFunction;
 
   await applyAuthController();
   await applySessionController({});

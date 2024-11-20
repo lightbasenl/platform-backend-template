@@ -1,7 +1,7 @@
 import { newEventFromEvent } from "@compas/stdlib";
-import { authCreateUser, multitenantRequireTenant } from "@lightbasenl/backend";
 import { scaffoldHandlers } from "../generated/application/scaffold/controller.js";
 import { sql } from "../services/postgres.js";
+import { authCreateUser, multitenantRequireTenant } from "@lightbasenl/backend";
 
 // TODO(platform): remove this;
 scaffoldHandlers.createUser = async (ctx) => {

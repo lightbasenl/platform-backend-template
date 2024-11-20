@@ -142,7 +142,7 @@ export async function applyKeycloakBasedController(settings) {
 
       const set2FACheck =
         typeof settings.determineTwoStepFunction === "function" &&
-        (settings.determineTwoStepFunction(user) ?? {});
+        ((await settings.determineTwoStepFunction(ctx, user)) ?? {});
 
       const newSessionResult = await sessionStoreCreate(
         newEventFromEvent(ctx.event),

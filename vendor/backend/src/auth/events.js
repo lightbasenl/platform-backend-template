@@ -104,7 +104,7 @@ function authVerifyServerSideRenderingHeader(ctx, headerKey) {
  *   };
  * ```
  * @param {import("@compas/server").Context<any, any, any>} ctx
- * @param {string[]} allowedIps
+ * @param {Array<string>} allowedIps
  */
 export function authIpCheck(ctx, allowedIps) {
   let trustedIp = ctx.ip;

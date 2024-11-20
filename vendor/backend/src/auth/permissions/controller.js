@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/check-types */
 import { newEventFromEvent } from "@compas/stdlib";
 import { backendGetTenantAndUser } from "../../events.js";
 import { sql } from "../../services.js";
@@ -19,8 +20,8 @@ import {
 
 /**
  * @typedef {(tenants:
- *   QueryResultBackendTenant[]) =>
- *   PermissionMandatoryRole[]} PermissionBuildMandatoryRoles
+ *   Array<QueryResultBackendTenant>) =>
+ *   Array<PermissionMandatoryRole>} PermissionBuildMandatoryRoles
  */
 
 /**

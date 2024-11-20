@@ -58,6 +58,9 @@ export let app;
  */
 export let sql;
 
+/**
+ * @type {typeof import("../../../src/generated/application/common/database.js").queries}
+ */
 export let queries = undefined;
 
 /**
@@ -120,6 +123,12 @@ export let userBuilder = {
  */
 export let tenantBuilder = {};
 
+/**
+ * @type {(user: QueryResultAuthUser) => void}}
+ */
+
+export let onAuthRequireUserCallback = (_user) => {};
+
 /** @type {import("@compas/store").SessionTransportSettings} */
 // @ts-expect-error
 //
@@ -162,6 +171,7 @@ export let sessionDurationCallback = () => ({
  * @param {{
  *   userBuilder?: AuthUserQueryBuilder,
  *   tenantBuilder?: BackendTenantQueryBuilder,
+ *   onAuthRequireUserCallback?: (user: QueryResultAuthUser) => void,
  *   shouldPasswordBasedForcePasswordResetAfterSixMonths?: boolean,
  *   shouldPasswordBasedRollingLoginAttemptBlock?: boolean,
  *   shouldPasswordBasedUpdatePasswordRemoveCurrentSession?: boolean,
@@ -276,6 +286,9 @@ export async function backendInitServices(other) {
   if (other.tenantBuilder) {
     tenantBuilder = { ...other.tenantBuilder, ...tenantBuilder };
   }
+
+  onAuthRequireUserCallback =
+    other.onAuthRequireUserCallback ?? onAuthRequireUserCallback;
 
   passwordBasedForcePasswordResetAfterSixMonths =
     other.shouldPasswordBasedForcePasswordResetAfterSixMonths ?? false;

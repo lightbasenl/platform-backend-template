@@ -1,7 +1,7 @@
 import { createBodyParser, getApp } from "@compas/server";
-import { backendGetConfig } from "@lightbasenl/backend";
 import { router } from "../generated/application/common/router.js";
 import { serviceLogger } from "./logger.js";
+import { backendGetConfig } from "@lightbasenl/backend";
 
 /**
  * @type {Application}

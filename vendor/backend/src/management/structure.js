@@ -32,7 +32,7 @@ export async function extendWithManagement(app) {
       .fields({
         readable: {},
         writable: {
-          $pick: ["globalValue", "tenantValues", "description"],
+          $pick: ["globalValue", "tenantValues", "description", "userValues"],
         },
       }),
   );

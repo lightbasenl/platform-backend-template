@@ -7,9 +7,10 @@ import { featureFlagCache } from "./cache.js";
  *
  * @param {import("@compas/stdlib").InsightEvent} event
  * @param {QueryResultBackendTenant} tenant
+ * @param {QueryResultAuthUser} user
  * @returns {Promise<FeatureFlagCurrentResponse>}
  */
-export async function featureFlagCurrent(event, tenant) {
+export async function featureFlagCurrent(event, tenant, user) {
   eventStart(event, "featureFlag.current");
 
   let flags = featureFlagCache.getAll();
@@ -40,11 +41,11 @@ export async function featureFlagCurrent(event, tenant) {
       continue;
     }
 
-    const tenantSpecificValue = flag?.tenantValues?.[tenant?.name];
+    const tenantSpecificValue = flag?.tenantValues?.[tenant?.name] ?? false;
+    const userSpecificValue = flag?.userValues?.[user?.id] ?? false;
 
-    result[flag.name] = !isNil(tenantSpecificValue)
-      ? tenantSpecificValue
-      : flag.globalValue;
+    result[flag.name] =
+      flag.globalValue || tenantSpecificValue || userSpecificValue;
   }
 
   for (const flag of featureFlags.availableFlags) {
@@ -108,11 +109,13 @@ export async function featureFlagGetDynamic(event, tenant, user, identifier) {
   eventStart(event, "featureFlag.getDynamic");
 
   const flag = await featureFlagCache.get(identifier);
-  const tenantSpecificValue = flag?.tenantValues?.[tenant?.tenant?.name];
+  const tenantSpecificValue =
+    flag?.tenantValues?.[tenant?.tenant?.name] ?? false;
+  const userSpecificValue = flag?.userValues?.[user?.id] ?? false;
 
   eventStop(event);
 
-  return !isNil(tenantSpecificValue) ? tenantSpecificValue : flag.globalValue;
+  return flag?.globalValue || tenantSpecificValue || userSpecificValue;
 }
 
 /**
@@ -123,6 +126,7 @@ export async function featureFlagGetDynamic(event, tenant, user, identifier) {
  * @param {FeatureFlagIdentifier} identifier
  * @param {boolean} value
  * @param {BackendFeatureFlag["tenantValues"]} tenantValues
+ * @param {BackendFeatureFlag["userValues"]} userValues
  * @returns {Promise<void>}
  */
 export async function featureFlagSetDynamic(
@@ -130,6 +134,7 @@ export async function featureFlagSetDynamic(
   identifier,
   value,
   tenantValues = undefined,
+  userValues = undefined,
 ) {
   eventStart(event, "featureFlag.setDynamic");
 
@@ -152,14 +157,15 @@ export async function featureFlagSetDynamic(
     },
     update: {
       globalValue: value,
-      tenantValues,
+      tenantValues: tenantValues ?? null,
+      userValues: userValues ?? null,
     },
   });
 
   if (featureFlagCache.isEnabled()) {
-    // Clear the cache if enabled. This method function is often only used in test code, which most likely disables the cache anyways.
-    featureFlagCache.disable();
-    featureFlagCache.enable();
+    // Clear the cache if enabled. This method function is often only used in test code, which most
+    // likely disables the cache anyways.
+    featureFlagCache.clearAll();
   }
 
   eventStop(event);

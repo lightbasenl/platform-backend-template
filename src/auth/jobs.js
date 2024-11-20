@@ -36,7 +36,7 @@ export async function authAnonymousBasedUserRegisteredEvent(
   }
 
   // TODO(platform): Act
-  // eslint-disable-next-line no-unused-vars
+
   const x = 5;
 
   eventStop(event);
@@ -87,7 +87,7 @@ export async function authPasswordBasedUserRegisteredEvent(
   }
 
   // TODO(platform): Act
-  // eslint-disable-next-line no-unused-vars
+
   const x = 5;
 
   eventStop(event);
@@ -139,7 +139,7 @@ export async function authPasswordBasedForgotPasswordEvent(
   }
 
   // TODO(platform): Act
-  // eslint-disable-next-line no-unused-vars
+
   const x = 5;
 
   eventStop(event);
@@ -180,7 +180,7 @@ export async function authPasswordBasedPasswordUpdatedEvent(
   }
 
   // TODO(platform): Act
-  // eslint-disable-next-line no-unused-vars
+
   const x = 5;
 
   eventStop(event);
@@ -228,7 +228,7 @@ export async function authPasswordBasedEmailUpdatedEvent(event, sql, { data }) {
   }
 
   // TODO(platform): Act
-  // eslint-disable-next-line no-unused-vars
+
   const x = 5;
 
   eventStop(event);
@@ -269,7 +269,7 @@ export async function authPasswordBasedLoginVerifiedEvent(
   }
 
   // TODO(platform): Act
-  // eslint-disable-next-line no-unused-vars
+
   const x = 5;
 
   eventStop(event);
@@ -310,7 +310,7 @@ export async function authPasswordBasedPasswordResetEvent(
   }
 
   // TODO(platform): Act
-  // eslint-disable-next-line no-unused-vars
+
   const x = 5;
 
   eventStop(event);

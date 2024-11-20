@@ -126,7 +126,7 @@ export async function applyPasswordBasedController(settings) {
 
       const set2FACheck =
         typeof settings.determineTwoStepFunction === "function" &&
-        (settings.determineTwoStepFunction(user) ?? {});
+        ((await settings.determineTwoStepFunction(ctx, user)) ?? {});
       const setUpdatePassword = authPasswordBasedShouldUserUpdatePassword(user);
 
       const newSessionResult = await sessionStoreCreate(
@@ -257,7 +257,7 @@ export async function applyPasswordBasedController(settings) {
 
       const set2FACheck =
         typeof settings.determineTwoStepFunction === "function" &&
-        (settings.determineTwoStepFunction(user) ?? {});
+        ((await settings.determineTwoStepFunction(ctx, user)) ?? {});
       const setUpdatePassword = authPasswordBasedShouldUserUpdatePassword(user);
 
       const newSessionResult = await sessionStoreCreate(

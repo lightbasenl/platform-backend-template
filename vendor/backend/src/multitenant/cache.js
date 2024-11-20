@@ -1,6 +1,7 @@
 import { isNil, uuid } from "@compas/stdlib";
 import { PullThroughCache } from "@lightbase/pull-through-cache";
 import { queryTenant, sql, tenantBuilder } from "../services.js";
+import { cacheEventToSentryMetric } from "../util.js";
 
 /**
  * Frequently sampled tenant cache.
@@ -19,6 +20,9 @@ export const tenantCache = new PullThroughCache()
   })
   .withFetcher({
     fetcher: tenantFetcher,
+  })
+  .withEventCallback({
+    callback: cacheEventToSentryMetric("tenant"),
   });
 
 /**

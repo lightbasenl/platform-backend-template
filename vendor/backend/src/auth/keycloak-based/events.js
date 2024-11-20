@@ -408,6 +408,8 @@ export async function authKeycloakBasedVerifyAndReadToken(
   } catch (e) {
     throw AppError.validationError(
       "authKeycloakBased.verifyAndReadToken.invalidToken",
+      {},
+      e,
     );
   }
 }

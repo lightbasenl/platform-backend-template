@@ -1,4 +1,10 @@
 import { storeGetStructure } from "@compas/store";
+import { featureFlagDefinition, permissions } from "../src/constants.js";
+import { extendWithAuthCustom } from "./auth.js";
+import { extendWithDatabase } from "./database.js";
+import { extendWithMail } from "./mail.js";
+import { extendWithScaffold } from "./scaffold.js";
+import { extendWithType } from "./type.js";
 import {
   authPermissions,
   extendWithAuthAnonymousBased,
@@ -9,12 +15,6 @@ import {
   extendWithFeatureFlag,
   extendWithManagement,
 } from "@lightbasenl/backend";
-import { featureFlagDefinition, permissions } from "../src/constants.js";
-import { extendWithAuthCustom } from "./auth.js";
-import { extendWithDatabase } from "./database.js";
-import { extendWithMail } from "./mail.js";
-import { extendWithScaffold } from "./scaffold.js";
-import { extendWithType } from "./type.js";
 
 /**
  * Extend with compas additional/optional package  structures
